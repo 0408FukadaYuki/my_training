@@ -1,7 +1,7 @@
 CREATE TABLE
     `user` (
         `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-        `user_id` VARCHAR(15) NOT NULL,
+        `user_id` VARCHAR(15) NOT NULL UNIQUE,
         `name` VARCHAR(30) NOT NULL,
         `mail` VARCHAR(50) NOT NULL,
         `profile` VARCHAR(100),
