@@ -1,0 +1,16 @@
+User:
+  -
+    id:1
+    name:"matuda"
+    age:25
+    created_at:"2025-09-04 11:59:28"
+  -
+    id:2
+    name:"suzki"
+    age:30
+    created_at:"2025-09-04 11:59:28"
+  -
+    id:3
+    name:"honda"
+    age:35
+    created_at:"2025-09-04 11:59:28"
