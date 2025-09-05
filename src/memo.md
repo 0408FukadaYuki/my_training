@@ -4,22 +4,29 @@
 |No|物理名|論理名|データ型|NotNull|memo|
 |:---:|:---:|:---:|:--:|:-:|:-:|
 |1|id|id|INT|〇|主キー|
-|2|user_id|ユーザーID|VARCHARE(15)|〇||
-|3|name|名前|VARCHARE(30)|〇||
-|4|mail|メールアドレス|VARCHARE(30)|〇||
-|5|profile|自己紹介|VARCHARE(30)|||
+|2|user_id|ユーザーID|VARCHAR(15)|〇||
+|3|name|名前|VARCHAR(30)|〇||
+|4|mail|メールアドレス|VARCHAR(30)|〇||
+|5|profile|自己紹介|VARCHAR(30)|||
 |6|birth_date|生年月日|DATE|||
-|7|icon_image|アイコン画像||〇|パスを保存してデータは別サーバーが一般的|
-|8|password|パスワード||〇|どのように保存する？|
+|7|icon_image|アイコン画像|||パスを保存してデータは別サーバーが一般的|
+|8|password|パスワード||〇|SHA256でハッシュ化して保存|
 
 ### Post
 |No|物理名|論理名|データ型|NotNull|memo|
 |:---:|:---:|:---:|:--:|:-:|:-:|
-|1|id|INT|id|〇||
-|2|user_id|ユーザーID|VARCHARE(15)|〇|外部キー|
-|3|content|投稿内容|VARCHARE(140)|〇||
-|4|creted_at|作成時間|DATETIME|〇||
+|1|id|id|INT|3|content|投稿内容|VARCHAR(140)|〇|||〇||
+|2|user_id|ユーザーID|VARCHAR(15)|〇|外部キー|
+|3|content|投稿内容|VARCHAR(140)|〇||
+|4|reply_to|リプライ先ID|INT||元投稿の場合はNULL|
+|5|creted_at|作成時間|DATETIME|〇||
 
+### Like
+|No|物理名|論理名|データ型|NotNull|memo|
+|:---:|:---:|:---:|:--:|:-:|:-:|
+|1|user_id|ユーザーID|VARCHAR(15)|〇|複合キー|
+|2|post_id|投稿内容|VARCHAR(140)|〇|複合キー|
+|3|creted_at|作成時間|DATETIME|〇|
 
 ## 画面一覧
 ##### 必須
@@ -42,3 +49,23 @@
 - タイムライン
     - いいね機能
     - 昇順
+
+## API一覧
+#### User
+- ユーザー登録
+- ユーザー情報取得
+    - ユーザー投稿取得
+    - ユーザーいいね取得
+    - ユーザープロフィール取得
+
+#### Post
+- 新規投稿作成
+    - 新規投稿
+    - リプライ 
+- 投稿削除
+- 投稿取得
+
+#### Like
+- いいね保存
+- いいね削除
+ 　↑物理削除or論理削除 いいねボタンを連打した時どうする？
