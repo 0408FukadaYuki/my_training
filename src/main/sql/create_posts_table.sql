@@ -1,5 +1,5 @@
 CREATE TABLE
-    `post` (
+    `posts` (
         `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
         `user_id` VARCHAR(15) NOT NULL,
         `content` VARCHAR(140) NOT NULL,

@@ -1,6 +1,6 @@
 CREATE TABLE
-    `user` (
-        `uuid` CHAR(36) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `users` (
+        `uuid` CHAR(36) NOT NULL PRIMARY KEY,
         `user_id` VARCHAR(15) NOT NULL UNIQUE,
         `name` VARCHAR(30) NOT NULL,
         `mail` VARCHAR(50) NOT NULL,
