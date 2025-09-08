@@ -35,6 +35,8 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	testImplementation 'com.github.database-rider:rider-spring:1.38.1'
 	testImplementation 'com.github.database-rider:rider-core:1.38.1'
+	implementation group: 'com.h2database', name: 'h2', version: '2.3.232'
+	
 }
 
 tasks.named('test') {

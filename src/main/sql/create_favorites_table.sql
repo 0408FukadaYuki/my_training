@@ -1,5 +1,5 @@
 CREATE TABLE
-    `like` (
+    `favorites` (
         `user_id` VARCHAR(15) NOT NULL,
         `post_id` int NOT NULL,
         `created_at` DATETIME,
