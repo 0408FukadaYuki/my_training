@@ -6,7 +6,9 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 @Data
 @Entity
 @Table(name = "posts")
@@ -25,7 +27,4 @@ public class Post {
     @Column(name = "created_at")
     @CreationTimestamp
     private LocalDateTime createdAt;
-
-    public Post() {
-    }
 }
