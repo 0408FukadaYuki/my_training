@@ -4,6 +4,6 @@ CREATE TABLE
         `post_id` int NOT NULL,
         `created_at` DATETIME,
         PRIMARY KEY (user_id, post_id),
-        FOREIGN KEY (user_id) REFERENCES user (id),
+        FOREIGN KEY (user_id) REFERENCES user (uuid),
         FOREIGN KEY (post_id) REFERENCES post (id),
     );

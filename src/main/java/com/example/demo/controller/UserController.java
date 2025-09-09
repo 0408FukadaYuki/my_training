@@ -32,8 +32,6 @@ public class UserController {
         List<UserResponse> response = new ArrayList<>();
         users.forEach(user -> {
             UserResponse userResponse = new UserResponse();
-            userResponse.setId(user.getId());
-            userResponse.setAge(user.getAge());
             userResponse.setName(user.getName());
             response.add(userResponse);
         });
@@ -41,11 +39,9 @@ public class UserController {
     }
 
     @RequestMapping("/{id}")
-    public UserResponse getUserById(@PathVariable("id") Long id) {
+    public UserResponse getUserById(@PathVariable("id") String id) {
         User user = userServiceImpl.getUserById(id);
         UserResponse response = new UserResponse();
-        response.setId(user.getId());
-        response.setAge(user.getAge());
         response.setName(user.getName());
         return response;
     }
@@ -61,7 +57,7 @@ public class UserController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteUser(@PathVariable("id") Long id){
+    public void deleteUser(@PathVariable("id") String id){
         userServiceImpl.deleteUserById(id);
     }
     

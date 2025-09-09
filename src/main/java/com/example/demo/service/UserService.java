@@ -7,8 +7,8 @@ import com.example.demo.model.UpdateUserRequest;
 
 public interface UserService {
     public List<User> getUsers();
-    public User getUserById(Long id);
+    public User getUserById(String id);
     public void CreateUser(CreateUserRequest user);
     public void UpdateUserById(UpdateUserRequest user);
-    public void deleteUserById(Long id);
+    public void deleteUserById(String id);
 }
