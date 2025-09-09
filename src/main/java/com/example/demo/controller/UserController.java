@@ -41,7 +41,7 @@ public class UserController {
     }
 
     @RequestMapping("/{id}")
-    public UserResponse getUserById(@PathVariable("id") Long id) {
+    public UserResponse getUserById(@PathVariable("id") String id) {
         User user = userServiceImpl.getUserById(id);
         UserResponse response = new UserResponse();
         response.setId(user.getId());
@@ -61,7 +61,7 @@ public class UserController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteUser(@PathVariable("id") Long id){
+    public void deleteUser(@PathVariable("id") String id){
         userServiceImpl.deleteUserById(id);
     }
     
