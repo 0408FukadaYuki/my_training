@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @RestController
 @RequestMapping("/post")
-public class PostContorller {
+public class PostController {
     @Autowired
     private PostService postService;
 
