@@ -35,7 +35,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public void CreateUser(CreateUserRequest createUserInfo){
         User user = new User();
-        user.setAge(createUserInfo.getAge());
         user.setName(createUserInfo.getName());
         userRepository.save(user);
     }
@@ -43,8 +42,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public void UpdateUserById (UpdateUserRequest updateUserInfo){
         User updateUser = new User();
-        updateUser.setAge(updateUserInfo.getAge());
-        updateUser.setId(updateUserInfo.getId());
         updateUser.setName(updateUserInfo.getName());
         userRepository.save(updateUser);
     }
