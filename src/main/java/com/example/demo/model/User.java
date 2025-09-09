@@ -4,7 +4,9 @@ import java.util.Date;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 @Data
 @Entity
 @Table(name = "users")
@@ -26,7 +28,4 @@ public class User {
     private String iconImage;
     @Column(name = "pass_word", length = 64)
     private String password;
-
-    public User() {
-    }
 }
