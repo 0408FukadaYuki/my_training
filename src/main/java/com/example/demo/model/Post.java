@@ -1,10 +1,14 @@
 package com.example.demo.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 @Data
 @Entity
 @Table(name = "posts")
@@ -19,10 +23,8 @@ public class Post {
     @Column(name = "content", length = 140)
     private String content;
     @Column(name = "reply_to")
-    private Long replyTo;
+    private Integer replyTo;
     @Column(name = "created_at")
-    private Date createdAt;
-
-    public Post() {
-    }
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 }
