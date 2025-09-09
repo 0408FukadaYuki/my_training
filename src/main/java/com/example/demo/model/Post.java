@@ -21,7 +21,7 @@ public class Post {
     @Column(name = "content", length = 140)
     private String content;
     @Column(name = "reply_to")
-    private Long replyTo;
+    private Integer replyTo;
     @Column(name = "created_at")
     @CreationTimestamp
     private LocalDateTime createdAt;
