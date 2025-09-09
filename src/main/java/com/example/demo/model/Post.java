@@ -1,6 +1,8 @@
 package com.example.demo.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -21,7 +23,8 @@ public class Post {
     @Column(name = "reply_to")
     private Long replyTo;
     @Column(name = "created_at")
-    private Date createdAt;
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 
     public Post() {
     }
