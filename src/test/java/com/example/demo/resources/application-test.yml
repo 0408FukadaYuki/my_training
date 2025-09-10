@@ -11,3 +11,6 @@ spring:
     h2:
         console:
             enabled: true
+    sql:
+        init:
+            data-locations: classpath:test-data.sql

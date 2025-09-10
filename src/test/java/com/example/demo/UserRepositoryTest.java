@@ -3,8 +3,12 @@ package com.example.demo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.jdbc.Sql;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -14,14 +18,15 @@ import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 
 // TODO: 開発用とテスト用とで接続先DBを分ける
-@DataJpaTest
+@SpringBootTest
+@TestPropertySource(locations = "classpath:application-test.yml")
+@Sql(scripts = "/test-data.sql")
 class UserRepositoryTest {
 
 	@Autowired
 	private UserRepository userRepository;
 
 	@Test
-	@DBRider
 	void getUserById() throws Exception {
 		User expectUser = new User();
 		expectUser.setUuid("123e4567-e89b-12d3-a456-426614174000");
