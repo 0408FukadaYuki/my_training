@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.model.request.CreatePostRequest;
 import com.example.demo.service.PostService;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @RestController
@@ -21,5 +24,10 @@ public class PostContorller {
         postService.createPost(createPostRequest);
     }
 
+    // 投稿削除API
+    @DeleteMapping("/delete/{id}")
+    public void deletePost(@PathVariable Long id){
+        postService.deletePost(id);
+    }
     
 }
