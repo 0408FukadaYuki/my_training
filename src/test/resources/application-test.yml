@@ -8,9 +8,12 @@ spring:
         password: password
     jpa:
         database-platform: org.hibernate.dialect.H2Dialect
+        hibernate:
+            ddl-auto: create-drop
     h2:
         console:
             enabled: true
     sql:
         init:
-            data-locations: classpath:test-data.sql
+            data-locations: classpath:testdata/test-data.sql
+            mode: never
