@@ -18,16 +18,28 @@ public class PostContorller {
     @Autowired
     private PostService postService;
 
-    // 新規投稿作成API
+    /**
+     * 投稿作成API。リプライも同じAPIで処理する
+     *
+     * @param createPostRequest リクエストボディで受け取る新規投稿の情報。
+     *                          リプライの場合はreplyToにリプライ先PostのIDをセットし、
+     *                          新規投稿の場合はnullをセットする。
+     */
+
     @PostMapping("/create")
     public void createPost(@RequestBody CreatePostRequest createPostRequest) {
         postService.createPost(createPostRequest);
     }
 
-    // 投稿削除API
+
+    /**
+     * 投稿削除API
+     *
+     * @param id 削除対象のPostのID
+     */
     @DeleteMapping("/delete/{id}")
-    public void deletePost(@PathVariable Long id){
+    public void deletePost(@PathVariable Long id) {
         postService.deletePost(id);
     }
-    
+
 }
