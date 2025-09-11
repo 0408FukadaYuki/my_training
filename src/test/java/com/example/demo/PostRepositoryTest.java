@@ -11,7 +11,6 @@ import com.example.demo.model.Post;
 import com.example.demo.model.User;
 import com.example.demo.repository.PostRepository;
 
-// TODO: 開発用とテスト用とで接続先DBを分ける
 @DataJpaTest
 class PostRepositoryTest {
 
