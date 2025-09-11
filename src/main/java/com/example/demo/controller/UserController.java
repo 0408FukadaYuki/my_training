@@ -16,6 +16,6 @@ public class UserController {
 
     @PostMapping("/create")
     public void createUser(@RequestBody CreateUserRequest user) {
-        userServiceImpl.CreateUser(user);
+        userServiceImpl.createUser(user);
     }
 }
