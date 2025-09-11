@@ -3,7 +3,7 @@ package com.example.demo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 
@@ -13,9 +13,8 @@ import java.util.Optional;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 
-@SpringBootTest
+@DataJpaTest
 @TestPropertySource(locations = "classpath:application-test.yml")
-
 @Sql(scripts = "classpath:testdata/test-data.sql", 
 	executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 class UserRepositoryTest {
