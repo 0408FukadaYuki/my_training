@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.example.demo.exception.PostNotCreatedException;
+import com.example.demo.model.ErrorResponseBody;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
