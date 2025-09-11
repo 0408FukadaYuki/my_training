@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 import com.github.database.rider.spring.api.DBRider;
 import com.example.demo.model.Post;
@@ -12,6 +13,9 @@ import com.example.demo.model.User;
 import com.example.demo.repository.PostRepository;
 
 @DataJpaTest
+@TestPropertySource(locations = "classpath:application-test.yml")
+@Sql(scripts = "classpath:testdata/test-data.sql", 
+	executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 class PostRepositoryTest {
 
 	@Autowired
