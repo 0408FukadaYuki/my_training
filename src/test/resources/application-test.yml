@@ -2,13 +2,18 @@ spring:
     application:
         name: demo
     datasource:
-        url: jdbc:h2:mem:devdb
+        url: jdbc:h2:mem:testdb
         driverClassName: org.h2.Driver
         username: sa
         password: password
     jpa:
         database-platform: org.hibernate.dialect.H2Dialect
-        defer-datasource-initialization: true
+        hibernate:
+            ddl-auto: create-drop
     h2:
         console:
             enabled: true
+    sql:
+        init:
+            data-locations: classpath:testdata/test-data.sql
+            mode: never
