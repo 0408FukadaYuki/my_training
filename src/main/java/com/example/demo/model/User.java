@@ -1,7 +1,6 @@
 package com.example.demo.model;
 
-import java.util.Date;
-
+import java.time.LocalDate;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,7 +22,7 @@ public class User {
     @Column(name = "profile", length = 100)
     private String profile;
     @Column(name = "birth_date")
-    private Date birthDate;
+    private LocalDate birthDate;
     @Column(name = "icon_image")
     private String iconImage;
     @Column(name = "pass_word", length = 64)
