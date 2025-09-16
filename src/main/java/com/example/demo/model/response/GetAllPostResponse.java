@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class GetAllPostResponse {
+    private String uuid;
+    private Long postId;
     private String userId;
     private String userName;
     private String content;

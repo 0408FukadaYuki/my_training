@@ -46,6 +46,8 @@ public class PostServiceImpl implements PostService {
             List<GetAllPostResponse> response = new ArrayList<>();
             posts.forEach(post -> {
                 GetAllPostResponse res = new GetAllPostResponse();
+                res.setUuid(post.getUserId().getUuid());
+                res.setPostId(post.getId());
                 res.setUserId(post.getUserId().getUserId());
                 res.setUserName(post.getUserId().getName());
                 res.setContent(post.getContent());
