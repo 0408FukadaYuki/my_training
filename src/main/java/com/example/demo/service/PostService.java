@@ -1,6 +1,9 @@
 package com.example.demo.service;
 
+import java.util.List;
+
 import com.example.demo.model.request.CreatePostRequest;
+import com.example.demo.model.response.GetAllPostResponse;
 
 public interface PostService {
 
@@ -19,4 +22,12 @@ public interface PostService {
      * @param id 削除対象のPostのID
      */
     public void deletePost(Long id);
+
+    /**
+     * 投稿取得関数
+     *
+     * @return 保存されているすべての投稿
+     */
+    public List<GetAllPostResponse> findAllPost();
 }
+
