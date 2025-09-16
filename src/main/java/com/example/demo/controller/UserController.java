@@ -16,6 +16,10 @@ public class UserController {
     @Autowired
     private UserServiceImpl userServiceImpl;
 
+    /**
+     * 新規ユーザー作成API
+     * @param user　リクエストボディで受け取る新規ユーザーの情報
+     */
     @PostMapping("/create")
     public void createUser(@RequestBody CreateUserRequest user) {
         userServiceImpl.createUser(user);
