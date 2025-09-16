@@ -2,10 +2,12 @@ package com.example.demo.model;
 
 import java.time.LocalDate;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 新規ユーザー作成APIに使用するリクエストモデル
  */
+@NoArgsConstructor
 @Data
 public class CreateUserRequest {
     private String userId;
@@ -15,7 +17,4 @@ public class CreateUserRequest {
     private LocalDate birthDate;
     private String iconImage;
     private String password;
-
-    public CreateUserRequest() {
-    }
 }
