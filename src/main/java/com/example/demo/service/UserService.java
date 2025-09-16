@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.model.CreateUserRequest;
+import com.example.demo.model.request.CreateUserRequest;
 
 public interface UserService {
     /**
