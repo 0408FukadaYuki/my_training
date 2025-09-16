@@ -7,12 +7,9 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.Optional;
 
-import com.example.demo.model.CreateUserRequest;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 

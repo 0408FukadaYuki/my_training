@@ -1,7 +1,6 @@
 package com.example.demo;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
 
