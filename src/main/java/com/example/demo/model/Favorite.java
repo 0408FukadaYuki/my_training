@@ -1,6 +1,8 @@
 package com.example.demo.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -18,7 +20,8 @@ public class Favorite {
     @JoinColumn(name = "post_id", referencedColumnName = "id",insertable = false, updatable = false, nullable = false)
     private Post post;
     @Column(name = "created_at")
-    private Date createdAt;
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 
     public Favorite() {
     }
