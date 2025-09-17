@@ -1,6 +1,8 @@
 package com.example.demo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -73,5 +75,13 @@ class PostRepositoryTest {
         assertEquals("123e4567-e89b-12d3-a456-426614174000", actual.get(2).getUserId().getUuid());
         assertEquals("2回目の投稿です。", actual.get(2).getContent());
         assertEquals(null, actual.get(2).getReplyTo());
+    }
+
+    @Test
+    @DBRider
+    void testDeletePost() throws Exception{
+        postRepository.deleteById((long)1);
+        Optional<Post> acutal = postRepository.findById((long)1);
+        assertTrue(acutal.isEmpty());
     }
 }
