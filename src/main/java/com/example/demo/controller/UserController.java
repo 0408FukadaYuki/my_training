@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.model.request.CreateUserRequest;
 import com.example.demo.service.UserServiceImpl;
-
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class UserController {
 
     @Autowired
-    private UserServiceImpl userServiceImpl;
+    private UserService userService;
 
     /**
      * 新規ユーザー作成API
@@ -23,6 +22,6 @@ public class UserController {
      */
     @PostMapping("/create")
     public void createUser(@RequestBody CreateUserRequest user) {
-        userServiceImpl.createUser(user);
+        userService.createUser(user);
     }
 }
