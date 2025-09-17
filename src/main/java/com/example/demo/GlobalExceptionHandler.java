@@ -21,7 +21,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(PostNotGetException.class)
-        public ResponseEntity<ErrorResponseBody> handlePostNotGetException(PostNotCreatedException e) {
+    public ResponseEntity<ErrorResponseBody> handlePostNotGetException(PostNotCreatedException e) {
         ErrorResponseBody errorResponseBody = new ErrorResponseBody();
         errorResponseBody.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
         errorResponseBody.setErrorMessage(e.getMessage());
