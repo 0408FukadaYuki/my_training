@@ -12,7 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.time.LocalDate;
 
 import com.example.demo.controller.UserController;
-import com.example.demo.model.CreateUserRequest;
+import com.example.demo.model.request.CreateUserRequest;
 import com.example.demo.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
