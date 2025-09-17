@@ -7,16 +7,15 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Optional;
+
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 
 @DataJpaTest
 @TestPropertySource(locations = "classpath:application-test.yml")
-@Sql(scripts = "classpath:testdata/test-data.sql", 
-	executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(scripts = "classpath:testdata/test-data.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 class UserRepositoryTest {
 
 	@Autowired
@@ -24,22 +23,29 @@ class UserRepositoryTest {
 
 	@Test
 	void getUserById() throws Exception {
-		User expectUser = new User();
-		expectUser.setUuid("a23e4567-e89b-12d3-a456-426614174000");
-		expectUser.setUserId("test_tarou");
-		expectUser.setName("テスト 太郎");
-		expectUser.setMail("tarou@example.com");
-		expectUser.setProfile("テストです");
-		String dateString = "1985-05-15 00:00:00.0";
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
-		Date date = sdf.parse(dateString);
-		expectUser.setBirthDate(date);
-		expectUser.setIconImage("");
-		expectUser.setPassword("ef92b778bafe771e89245b89ecbcf23e9a8a0d53a71f80626e3e408559caa046");
+		User createUserInfo = new User();
+		createUserInfo.setUuid("018ffc72-5231-7262-bcf6-1434e89e9e0c");
+		createUserInfo.setUserId("testUser");
+		createUserInfo.setIconImage(null);
+		createUserInfo.setName("testUserName");
+		createUserInfo.setMail("test@test.com");
+		createUserInfo.setProfile("これはUserContollerのテストです");
+		createUserInfo.setPassword("b94d27b9934d3e08a52e52d7da7dabfa");
+		LocalDate birthDate = LocalDate.of(1997, 04, 8);
+		createUserInfo.setBirthDate(birthDate);
 
-		Optional<User> user = userRepository.findById("a23e4567-e89b-12d3-a456-426614174000");
-        User actualUser = user.get();
-		assertEquals(expectUser, actualUser);
+		userRepository.save(createUserInfo);
+
+		Optional<User> user = userRepository.findById("018ffc72-5231-7262-bcf6-1434e89e9e0c");
+		User actualUser = user.get();
+		assertEquals("018ffc72-5231-7262-bcf6-1434e89e9e0c", actualUser.getUuid());
+		assertEquals("testUser", actualUser.getUserId());
+		assertEquals("testUserName", actualUser.getName());
+		assertEquals("test@test.com", actualUser.getMail());
+		assertEquals("これはUserContollerのテストです", actualUser.getProfile());
+		assertEquals(birthDate, actualUser.getBirthDate());
+		assertEquals(null, actualUser.getIconImage());
+		assertEquals("b94d27b9934d3e08a52e52d7da7dabfa", actualUser.getPassword());
 
 	}
 }
