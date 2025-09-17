@@ -3,6 +3,7 @@ package com.example.demo;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
@@ -17,6 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
+import com.example.demo.exception.PostNotCreatedException;
 import com.example.demo.exception.PostNotGetException;
 import com.example.demo.model.Post;
 import com.example.demo.model.User;
@@ -45,7 +47,20 @@ public class PostServiceTest {
     }
 
     @Test
-    void testFindAllPost(){
+    void testCreatePostThrowException() {
+        CreatePostRequest createPostRequest = new CreatePostRequest();
+        createPostRequest.setUserId("23e4567-e89b-12d3-a456-426614174000");
+        createPostRequest.setContent("Contollerのテストです");
+        createPostRequest.setReplyTo(null);
+        DataAccessException dataAccessException = new DataAccessException("error") {
+        };
+        when(postRepository.save(any())).thenThrow(dataAccessException);
+        PostNotCreatedException exception = assertThrows(PostNotCreatedException.class, () -> postService.createPost(createPostRequest));
+        assertEquals(exception.getMessage(), "投稿を作成できませんでした。");
+    }
+
+    @Test
+    void testFindAllPost() {
         LocalDateTime localDateTime = LocalDateTime.of(1990, 1, 1, 0, 0, 0);
         GetAllPostResponse response1 = new GetAllPostResponse();
         response1.setUuid("a23e4567-e89b-12d3-a456-426614174000");
@@ -68,7 +83,7 @@ public class PostServiceTest {
         List<GetAllPostResponse> expectedResponses = new ArrayList<>(List.of(response1, response2));
 
         Post post1 = new Post();
-        post1.setId((long)1);
+        post1.setId((long) 1);
         User user1 = new User();
         user1.setUuid("a23e4567-e89b-12d3-a456-426614174000");
         user1.setUserId("test_tarou");
@@ -79,7 +94,7 @@ public class PostServiceTest {
         post1.setCreatedAt(localDateTime);
 
         Post post2 = new Post();
-        post2.setId((long)2);
+        post2.setId((long) 2);
         User user2 = new User();
         user2.setUuid("b23e4567-e89b-12d3-a456-426614174000");
         user2.setUserId("test_hanako");
@@ -88,8 +103,8 @@ public class PostServiceTest {
         post2.setContent("これはJunitのテストです");
         post2.setReplyTo(null);
         post2.setCreatedAt(localDateTime);
-    
-        Iterable<Post> mockResponse = new ArrayList <>(List.of(post1,post2));
+
+        Iterable<Post> mockResponse = new ArrayList<>(List.of(post1, post2));
 
         when(postRepository.findAll()).thenReturn(mockResponse);
 
@@ -98,13 +113,12 @@ public class PostServiceTest {
         assertEquals(expectedResponses, acutualResponse);
     }
 
-        @Test
-    void testFindAllPostThrowsException(){
-
-        DataAccessException dataAccessException = new DataAccessException("error") {};
+    @Test
+    void testFindAllPostThrowsException() {
+        DataAccessException dataAccessException = new DataAccessException("error") {
+        };
         when(postRepository.findAll()).thenThrow(dataAccessException);
-        PostNotGetException exception = 
-        assertThrows(PostNotGetException.class, ()-> postService.findAllPost());
+        PostNotGetException exception = assertThrows(PostNotGetException.class, () -> postService.findAllPost());
         assertEquals(exception.getMessage(), "投稿を取得できませんでした。");
     }
 }
