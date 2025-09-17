@@ -60,6 +60,11 @@ public class PostServiceTest {
     }
 
     @Test
+    void testDeletePost() {
+        assertDoesNotThrow(() -> postService.deletePost((long)1));
+    }
+
+    @Test
     void testFindAllPost() {
         LocalDateTime localDateTime = LocalDateTime.of(1990, 1, 1, 0, 0, 0);
         GetAllPostResponse response1 = new GetAllPostResponse();
