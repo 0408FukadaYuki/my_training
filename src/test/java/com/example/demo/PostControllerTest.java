@@ -8,6 +8,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -60,6 +61,13 @@ class PostControllerTest {
         mockMvc.perform(post("/post/create")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(request))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void testDeletePost() throws Exception {
+        mockMvc.perform(delete("/post/delete/{id}", 1)
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
