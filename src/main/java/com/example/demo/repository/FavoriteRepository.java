@@ -9,7 +9,6 @@ import com.example.demo.model.User;
 
 import java.util.List;
 
-
 @Repository
 public interface FavoriteRepository extends CrudRepository<Favorite, FavoritePK> {
     List<Favorite> findByUser(User user);

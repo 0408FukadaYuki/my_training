@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.model.Post;
 import com.example.demo.model.request.CreatePostRequest;
 import com.example.demo.model.response.GetAllPostResponse;
 import com.example.demo.service.PostService;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-
 
 @RestController
 @RequestMapping("/post")
@@ -38,7 +36,6 @@ public class PostController {
         postService.createPost(createPostRequest);
     }
 
-
     /**
      * 投稿削除API
      *
@@ -51,7 +48,8 @@ public class PostController {
 
     /**
      * 投稿取得API
-     * @return　保存されているすべての投稿
+     * 
+     * @return 保存されているすべての投稿
      */
     @GetMapping("/all")
     public List<GetAllPostResponse> getAllPost() {
