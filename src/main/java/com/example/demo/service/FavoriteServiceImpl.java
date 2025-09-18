@@ -8,6 +8,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.exception.FavoriteNotCreatedException;
+import com.example.demo.exception.FavoriteNotGetException;
 import com.example.demo.model.Favorite;
 import com.example.demo.model.FavoritePK;
 import com.example.demo.model.Post;
@@ -54,7 +55,7 @@ public class FavoriteServiceImpl implements FavoriteService {
             });
             return response;
         } catch (DataAccessException e) {
-            throw new FavoriteNotCreatedException("お気に入りを取得できませんでした。");
+            throw new FavoriteNotGetException("お気に入りを取得できませんでした。");
         }
     }
 
