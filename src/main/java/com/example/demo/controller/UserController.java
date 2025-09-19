@@ -18,7 +18,8 @@ public class UserController {
 
     /**
      * 新規ユーザー作成API
-     * @param user　リクエストボディで受け取る新規ユーザーの情報
+     * 
+     * @param user リクエストボディで受け取る新規ユーザーの情報
      */
     @PostMapping("/create")
     public void createUser(@RequestBody CreateUserRequest user) {
