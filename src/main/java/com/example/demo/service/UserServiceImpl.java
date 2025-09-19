@@ -7,6 +7,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.exception.PostNotCreatedException;
+import com.example.demo.exception.UserNotCreatedException;
 import com.example.demo.model.User;
 import com.example.demo.model.request.CreateUserRequest;
 import com.example.demo.model.request.LoginUserRequest;
@@ -22,9 +23,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void createUser(CreateUserRequest createUserInfo) {
-        User user = new User();
+        try {
+                    User user = new User();
         user = setCreateUserInfo(createUserInfo);
         userRepository.save(user);
+        } catch (DataAccessException e) {
+            throw new UserNotCreatedException("ユーザーを作成できませんでした。");
+        }
+
     }
 
     @Override
