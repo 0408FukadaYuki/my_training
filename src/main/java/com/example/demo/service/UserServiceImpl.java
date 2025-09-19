@@ -24,9 +24,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public void createUser(CreateUserRequest createUserInfo) {
         try {
-                    User user = new User();
-        user = setCreateUserInfo(createUserInfo);
-        userRepository.save(user);
+            User user = new User();
+            user = setCreateUserInfo(createUserInfo);
+            userRepository.save(user);
         } catch (DataAccessException e) {
             throw new UserNotCreatedException("ユーザーを作成できませんでした。");
         }
