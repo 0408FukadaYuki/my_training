@@ -6,19 +6,25 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.exception.PostNotCreatedException;
+import com.example.demo.exception.PostNotDeletedException;
 import com.example.demo.exception.PostNotGetException;
 import com.example.demo.model.Post;
 import com.example.demo.model.User;
 import com.example.demo.model.request.CreatePostRequest;
 import com.example.demo.model.response.GetAllPostResponse;
+import com.example.demo.repository.FavoriteRepository;
 import com.example.demo.repository.PostRepository;
 
 @Service
 public class PostServiceImpl implements PostService {
     @Autowired
     private PostRepository postRepository;
+
+    @Autowired
+    private FavoriteRepository favoriteRepository;
 
     @Override
     public void createPost(CreatePostRequest createPostRequest) {
@@ -35,9 +41,17 @@ public class PostServiceImpl implements PostService {
         }
     }
 
+    @Transactional
     @Override
     public void deletePost(Long id) {
-        postRepository.deleteById(id);
+        try {
+            Post deletePost = new Post();
+            deletePost.setId(id);
+            favoriteRepository.deleteByPost(deletePost);
+            postRepository.deleteById(id);
+        } catch (DataAccessException e) {
+            throw new PostNotDeletedException("投稿を削除できませんでした。");
+        }
     }
 
     @Override
