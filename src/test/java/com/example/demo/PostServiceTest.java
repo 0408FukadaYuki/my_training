@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
@@ -19,6 +20,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import com.example.demo.exception.PostNotCreatedException;
+import com.example.demo.exception.PostNotDeletedException;
 import com.example.demo.exception.PostNotGetException;
 import com.example.demo.model.Post;
 import com.example.demo.model.User;
@@ -55,13 +57,21 @@ public class PostServiceTest {
         DataAccessException dataAccessException = new DataAccessException("error") {
         };
         when(postRepository.save(any())).thenThrow(dataAccessException);
-        PostNotCreatedException exception = assertThrows(PostNotCreatedException.class, () -> postService.createPost(createPostRequest));
+        PostNotCreatedException exception = assertThrows(PostNotCreatedException.class,
+                () -> postService.createPost(createPostRequest));
         assertEquals(exception.getMessage(), "投稿を作成できませんでした。");
     }
 
     @Test
     void testDeletePost() {
-        assertDoesNotThrow(() -> postService.deletePost((long)1));
+        assertDoesNotThrow(() -> postService.deletePost((long) 1));
+    }
+
+    @Test
+    void testDeletePostThrowsException() {
+        doThrow(new DataAccessException("error") {}).when(postRepository).deleteById((long)2);
+        PostNotDeletedException exception = assertThrows(PostNotDeletedException.class, () -> postService.deletePost((long)2));
+        assertEquals(exception.getMessage(), "投稿を削除できませんでした。");
     }
 
     @Test
