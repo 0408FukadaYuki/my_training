@@ -1,15 +1,20 @@
 package com.example.demo.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.exception.FavoriteNotCreatedException;
+import com.example.demo.exception.FavoriteNotGetException;
 import com.example.demo.model.Favorite;
 import com.example.demo.model.FavoritePK;
 import com.example.demo.model.Post;
 import com.example.demo.model.User;
 import com.example.demo.model.request.CreateFavoriteRequest;
+import com.example.demo.model.response.UserFavoriteResponse;
 import com.example.demo.repository.FavoriteRepository;
 
 @Service
@@ -24,6 +29,33 @@ public class FavoriteServiceImpl implements FavoriteService {
             favoriteRepository.save(createFavoriteInfo);
         } catch (DataAccessException e) {
             throw new FavoriteNotCreatedException("お気に入りを保存できませんでした。");
+        }
+    }
+
+    @Override
+    public List<UserFavoriteResponse> getFavorite(String uuid){
+        try {
+            User findUserInfo = new User();
+            findUserInfo.setUuid(uuid);
+            Iterable<Favorite> favorites = favoriteRepository.findByUser(findUserInfo);
+            List<UserFavoriteResponse> response = new ArrayList<>();
+            favorites.forEach(favorite ->{
+                UserFavoriteResponse res = new UserFavoriteResponse();
+                User postUser = favorite.getPost().getUserId();
+                Post postInfo = favorite.getPost();
+                res.setUuid(postUser.getUuid());
+                res.setPostId(postInfo.getId());
+                res.setUserName(postUser.getName());
+                res.setUserId(postUser.getUserId());
+                res.setContent(postInfo.getContent());
+                res.setReplyTo(postInfo.getReplyTo());
+                res.setPostCreatedAt(postInfo.getCreatedAt());
+                res.setFavoriteCreatedAt(favorite.getCreatedAt());
+                response.add(res);
+            });
+            return response;
+        } catch (DataAccessException e) {
+            throw new FavoriteNotGetException("お気に入りを取得できませんでした。");
         }
     }
 
