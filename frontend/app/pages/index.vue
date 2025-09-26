@@ -1,8 +1,23 @@
 <script setup lang="ts">
-    async function login() {
-        await navigateTo('/timeLine')
+import { useLogin } from '~/composables/useLogin'
+import type { LoginResponse } from '~/composables/useLogin'
+
+const { login } = useLogin();
+
+const state = reactive({
+    email: '',
+    password: ''
+})
+
+async function submit() {
+    const response: LoginResponse = await login(state.email, state.password);
+
+    if (response.succes === true) {
+        await navigateTo('/timeLine');
     }
+}
 </script>
+
 
 <template>
     <UContainer class="bg-gray-200 h-screen flex justify-center items-center">
@@ -12,13 +27,13 @@
             </div>
             <UForm class="space-y-8 w-3/4 mx-auto flex flex-col justify-items-center">
                 <UFormField name="email">
-                    <UInput placeholder="メールアドレス" class="w-full" />
+                    <UInput v-model="state.email" placeholder="メールアドレス" class="w-full" />
                 </UFormField>
 
                 <UFormField name="password">
-                    <UInput type="password" placeholder="パスワード" class="w-full" />
+                    <UInput v-model="state.password" type="password" placeholder="パスワード" class="w-full" />
                 </UFormField>
-                <UButton type="submit" class="w-full" @click="login">
+                <UButton type="submit" class="w-full" @click="submit">
                     <div class="mx-auto">ログイン</div>
                 </UButton>
             </UForm>
