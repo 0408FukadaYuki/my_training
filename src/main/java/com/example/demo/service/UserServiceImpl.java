@@ -42,10 +42,10 @@ public class UserServiceImpl implements UserService {
 
             LoginUserResponse loginUserResponse = new LoginUserResponse();
             if (sucess) {
-                loginUserResponse.setSuccees(true);
+                loginUserResponse.setSucces(true);
                 loginUserResponse.setUser(user.get());
             } else {
-                loginUserResponse.setSuccees(false);
+                loginUserResponse.setSucces(false);
                 loginUserResponse.setMessage("ユーザ名またはパスワードが違います");
             }
 
