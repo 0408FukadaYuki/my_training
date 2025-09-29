@@ -1,3 +1,4 @@
+
 export interface User {
     uuid: string;
     userId: string;
@@ -21,7 +22,7 @@ export const useLogin = () => {
         try {
             const hashedPassword = await hashStringSHA256(password)
             const res: LoginResponse = await $fetch('/user/login', {
-                baseURL:config.public.apiBase,
+                baseURL: config.public.apiBase,
                 method: 'POST',
                 body: {
                     mail: email,
@@ -31,7 +32,7 @@ export const useLogin = () => {
             return res;
         } catch (error) {
             console.log(error);
-            throw error;
+            throw createError({ statusCode: 500, statusMessage: 'ネットワークエラーが発生しました。', fatal: true })
         }
     }
 
