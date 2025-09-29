@@ -26,7 +26,7 @@ class FavoriteRepositoryTest {
 
     @Test
     @DBRider
-    void testCreatePost() throws Exception {
+    void testFindByUser() throws Exception {
         LocalDateTime localDateTime = LocalDateTime.of(1990, 1, 1, 0, 0, 0);
         Favorite expectavorite = new Favorite();
         Post post = new Post();
