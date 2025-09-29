@@ -16,10 +16,12 @@ export interface LoginResponse {
 }
 
 export const useLogin = () => {
+    const config = useRuntimeConfig()
     const login = async (email: string, password: string): Promise<LoginResponse> => {
         try {
             const hashedPassword = await hashStringSHA256(password)
-            const res: LoginResponse = await $fetch('http://localhost:8080/user/login', {
+            const res: LoginResponse = await $fetch('/user/login', {
+                baseURL:config.public.apiBase,
                 method: 'POST',
                 body: {
                     mail: email,
@@ -36,11 +38,11 @@ export const useLogin = () => {
     return { login };
 }
 
-async function hashStringSHA256(str:string) {
-    const textEncoder = new TextEncoder(); 
+async function hashStringSHA256(str: string) {
+    const textEncoder = new TextEncoder();
     const data = textEncoder.encode(str);
-    const hashBuffer = await crypto.subtle.digest('SHA-256', data); 
-    const hashArray = Array.from(new Uint8Array(hashBuffer)); 
-    const hashedPassword = hashArray.map(b => b.toString(16).padStart(2, '0')).join(''); 
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashedPassword = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
     return hashedPassword;
 }
