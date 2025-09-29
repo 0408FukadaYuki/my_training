@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useLogin } from '~/composables/useLogin'
+import * as v from 'valibot'
 import type { LoginResponse } from '~/composables/useLogin'
 
 const { login } = useLogin();
@@ -9,6 +10,11 @@ const state = reactive({
     password: '',
     showAlertFlag: false,
     alertMessage: ""
+})
+
+const schema = v.object({
+    email: v.pipe(v.string(), v.email('無効なメールアドレスです')),
+    password: v.pipe(v.string(), v.nonEmpty('パスワードを入力してください'))
 })
 
 async function submit() {
@@ -31,7 +37,7 @@ async function submit() {
             <div class="mt-5 w-full text-center text-5xl h-1/5">
                 <h1>Log in</h1>
             </div>
-            <UForm class="space-y-8 w-3/4 mx-auto flex flex-col justify-items-center">
+            <UForm :schema="schema" :state="state"class="space-y-8 w-3/4 mx-auto flex flex-col justify-items-center" @submit="submit">
                 <UFormField name="email">
                     <UInput v-model="state.email" placeholder="メールアドレス" class="w-full" />
                 </UFormField>
@@ -39,7 +45,7 @@ async function submit() {
                 <UFormField name="password">
                     <UInput v-model="state.password" type="password" placeholder="パスワード" class="w-full" />
                 </UFormField>
-                <UButton type="submit" class="w-full" @click="submit">
+                <UButton type="submit" class="w-full">
                     <div class="mx-auto">ログイン</div>
                 </UButton>
             </UForm>
