@@ -45,9 +45,11 @@ public class PostServiceImpl implements PostService {
     @Override
     public void deletePost(Long id) {
         try {
-            Post deletePost = new Post();
-            deletePost.setId(id);
+            Post deletePost = postRepository.findById(id)
+                    .orElseThrow(() -> new PostNotDeletedException("指定された投稿が見つかりませんでした。"));
+
             favoriteRepository.deleteByPost(deletePost);
+
             postRepository.deleteById(id);
         } catch (DataAccessException e) {
             throw new PostNotDeletedException("投稿を削除できませんでした。");
