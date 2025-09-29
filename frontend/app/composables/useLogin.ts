@@ -12,7 +12,7 @@ export interface User {
 }
 
 export interface LoginResponse {
-    succes: boolean,
+    success: boolean,
     message: string,
     User: User,
 }
