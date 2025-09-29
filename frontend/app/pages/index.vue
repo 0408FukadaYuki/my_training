@@ -6,21 +6,27 @@ const { login } = useLogin();
 
 const state = reactive({
     email: '',
-    password: ''
+    password: '',
+    showAlertFlag: false,
+    alertMessage: ""
 })
 
 async function submit() {
     const response: LoginResponse = await login(state.email, state.password);
 
     if (response.success) {
+        state.showAlertFlag = false;
         await navigateTo('/timeLine');
+    } else {
+        state.showAlertFlag = true;
+        state.alertMessage = response.message;
     }
 }
 </script>
 
 
 <template>
-    <UContainer class="bg-gray-200 h-screen flex justify-center items-center">
+    <UContainer class="bg-gray-200 h-screen flex justify-center items-center flex-col">
         <div class="h-1/2 w-1/2 flex-col items-center justify-items-center bg-white border-4 border-green-300 ">
             <div class="mt-5 w-full text-center text-5xl h-1/5">
                 <h1>Log in</h1>
@@ -38,6 +44,7 @@ async function submit() {
                 </UButton>
             </UForm>
         </div>
+        <UAlert v-if=state.showAlertFlag color="error" class="mt-5 w-1/2" :title=state.alertMessage />
     </UContainer>
 
 </template>
