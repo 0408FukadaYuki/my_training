@@ -12,7 +12,7 @@ export interface User {
 }
 
 export interface LoginResponse {
-    succes: boolean,
+    success: boolean,
     message: string,
     User: User,
 }
@@ -28,7 +28,7 @@ export const useLogin = () => {
                 },
             })
             return res;
-        } catch (erorr) {
+        } catch (error) {
             console.log(error);
             throw error;
         }
