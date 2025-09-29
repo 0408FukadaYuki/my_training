@@ -1,5 +1,3 @@
-import { error } from "#build/ui";
-
 export interface User {
     uuid: string;
     userId: string;
@@ -20,11 +18,12 @@ export interface LoginResponse {
 export const useLogin = () => {
     const login = async (email: string, password: string): Promise<LoginResponse> => {
         try {
+            const hashedPassword = await hashStringSHA256(password)
             const res: LoginResponse = await $fetch('http://localhost:8080/user/login', {
                 method: 'POST',
                 body: {
                     mail: email,
-                    password: password,
+                    password: hashedPassword,
                 },
             })
             return res;
@@ -35,4 +34,13 @@ export const useLogin = () => {
     }
 
     return { login };
+}
+
+async function hashStringSHA256(str:string) {
+    const textEncoder = new TextEncoder(); 
+    const data = textEncoder.encode(str);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data); 
+    const hashArray = Array.from(new Uint8Array(hashBuffer)); 
+    const hashedPassword = hashArray.map(b => b.toString(16).padStart(2, '0')).join(''); 
+    return hashedPassword;
 }
