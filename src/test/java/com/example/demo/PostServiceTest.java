@@ -4,11 +4,13 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,11 +21,13 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import com.example.demo.exception.PostNotCreatedException;
+import com.example.demo.exception.PostNotDeletedException;
 import com.example.demo.exception.PostNotGetException;
 import com.example.demo.model.Post;
 import com.example.demo.model.User;
 import com.example.demo.model.request.CreatePostRequest;
 import com.example.demo.model.response.GetAllPostResponse;
+import com.example.demo.repository.FavoriteRepository;
 import com.example.demo.repository.PostRepository;
 import com.example.demo.service.PostService;
 
@@ -32,6 +36,9 @@ import com.example.demo.service.PostService;
 public class PostServiceTest {
     @MockitoBean
     private PostRepository postRepository;
+
+    @MockitoBean
+    private FavoriteRepository favoriteRepository;
 
     @Autowired
     private PostService postService;
@@ -55,13 +62,55 @@ public class PostServiceTest {
         DataAccessException dataAccessException = new DataAccessException("error") {
         };
         when(postRepository.save(any())).thenThrow(dataAccessException);
-        PostNotCreatedException exception = assertThrows(PostNotCreatedException.class, () -> postService.createPost(createPostRequest));
+        PostNotCreatedException exception = assertThrows(PostNotCreatedException.class,
+                () -> postService.createPost(createPostRequest));
         assertEquals(exception.getMessage(), "投稿を作成できませんでした。");
     }
 
     @Test
     void testDeletePost() {
-        assertDoesNotThrow(() -> postService.deletePost((long)1));
+        Post post = new Post();
+        post.setId((long) 2);
+        Optional<Post> mockValue = Optional.of(post);
+        when(postRepository.findById((long) 2)).thenReturn(mockValue);
+        assertDoesNotThrow(() -> postService.deletePost((long) 2));
+    }
+
+    @Test
+    void testDeletePostThrowsExceptionOfPostRepository() {
+        Post post = new Post();
+        post.setId((long) 2);
+        Optional<Post> mockValue = Optional.of(post);
+        when(postRepository.findById((long) 2)).thenReturn(mockValue);
+        doThrow(new DataAccessException("error") {
+        }).when(postRepository).deleteById((long) 2);
+        PostNotDeletedException exception = assertThrows(PostNotDeletedException.class,
+                () -> postService.deletePost((long) 2));
+        assertEquals(exception.getMessage(), "投稿を削除できませんでした。");
+    }
+
+    @Test
+    void testDeletePostThrowsExceptionOfFavoriteRepository() {
+        Post post = new Post();
+        post.setId((long) 2);
+        Optional<Post> mockValue = Optional.of(post);
+        when(postRepository.findById((long) 2)).thenReturn(mockValue);
+        doThrow(new DataAccessException("error") {
+        }).when(favoriteRepository).deleteByPost(post);
+        PostNotDeletedException exception = assertThrows(PostNotDeletedException.class,
+                () -> postService.deletePost((long) 2));
+        assertEquals(exception.getMessage(), "投稿を削除できませんでした。");
+    }
+
+    @Test
+    void testDeletePostThrowsExceptionOfFindById() {
+        Post post = new Post();
+        post.setId((long) 2);
+        Optional<Post> mockValue = Optional.empty();
+        when(postRepository.findById((long) 2)).thenReturn(mockValue);
+        PostNotDeletedException exception = assertThrows(PostNotDeletedException.class,
+                () -> postService.deletePost((long) 2));
+        assertEquals(exception.getMessage(), "指定された投稿が見つかりませんでした。");
     }
 
     @Test
