@@ -28,7 +28,7 @@ export const useLogin = () => {
                 },
             })
             return res;
-        } catch (erorr) {
+        } catch (error) {
             console.log(error);
             throw error;
         }
