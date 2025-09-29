@@ -65,7 +65,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponseBody);
     }
 
-        @ExceptionHandler(PostNotDeletedException.class)
+    @ExceptionHandler(PostNotDeletedException.class)
     public ResponseEntity<ErrorResponseBody> handlPostNotDeletedException(PostNotDeletedException e) {
         ErrorResponseBody errorResponseBody = new ErrorResponseBody();
         errorResponseBody.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
