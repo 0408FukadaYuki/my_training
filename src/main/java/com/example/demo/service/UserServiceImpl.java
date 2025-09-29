@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
         try {
             Optional<User> user = userRepository.findByMail(LoginUserRequest.getMail());
             Boolean sucess = user
-                    .map(u -> u.getPassword().equals(createSHA256Hash(LoginUserRequest.getPassword()))).orElse(false);
+                    .map(u -> u.getPassword().equals(LoginUserRequest.getPassword())).orElse(false);
 
             LoginUserResponse loginUserResponse = new LoginUserResponse();
             if (sucess) {
