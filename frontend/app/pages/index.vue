@@ -12,7 +12,7 @@ const state = reactive({
 async function submit() {
     const response: LoginResponse = await login(state.email, state.password);
 
-    if (response.succes === true) {
+    if (response.success) {
         await navigateTo('/timeLine');
     }
 }
