@@ -10,6 +10,7 @@ import static org.mockito.Mockito.when;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,6 +27,7 @@ import com.example.demo.model.Post;
 import com.example.demo.model.User;
 import com.example.demo.model.request.CreatePostRequest;
 import com.example.demo.model.response.GetAllPostResponse;
+import com.example.demo.repository.FavoriteRepository;
 import com.example.demo.repository.PostRepository;
 import com.example.demo.service.PostService;
 
@@ -34,6 +36,9 @@ import com.example.demo.service.PostService;
 public class PostServiceTest {
     @MockitoBean
     private PostRepository postRepository;
+
+    @MockitoBean
+    private FavoriteRepository favoriteRepository;
 
     @Autowired
     private PostService postService;
@@ -64,14 +69,48 @@ public class PostServiceTest {
 
     @Test
     void testDeletePost() {
-        assertDoesNotThrow(() -> postService.deletePost((long) 1));
+        Post post = new Post();
+        post.setId((long) 2);
+        Optional<Post> mockValue = Optional.of(post);
+        when(postRepository.findById((long) 2)).thenReturn(mockValue);
+        assertDoesNotThrow(() -> postService.deletePost((long) 2));
     }
 
     @Test
-    void testDeletePostThrowsException() {
-        doThrow(new DataAccessException("error") {}).when(postRepository).deleteById((long)2);
-        PostNotDeletedException exception = assertThrows(PostNotDeletedException.class, () -> postService.deletePost((long)2));
+    void testDeletePostThrowsExceptionOfPostRepository() {
+        Post post = new Post();
+        post.setId((long) 2);
+        Optional<Post> mockValue = Optional.of(post);
+        when(postRepository.findById((long) 2)).thenReturn(mockValue);
+        doThrow(new DataAccessException("error") {
+        }).when(postRepository).deleteById((long) 2);
+        PostNotDeletedException exception = assertThrows(PostNotDeletedException.class,
+                () -> postService.deletePost((long) 2));
         assertEquals(exception.getMessage(), "投稿を削除できませんでした。");
+    }
+
+    @Test
+    void testDeletePostThrowsExceptionOfFavoriteRepository() {
+        Post post = new Post();
+        post.setId((long) 2);
+        Optional<Post> mockValue = Optional.of(post);
+        when(postRepository.findById((long) 2)).thenReturn(mockValue);
+        doThrow(new DataAccessException("error") {
+        }).when(favoriteRepository).deleteByPost(post);
+        PostNotDeletedException exception = assertThrows(PostNotDeletedException.class,
+                () -> postService.deletePost((long) 2));
+        assertEquals(exception.getMessage(), "投稿を削除できませんでした。");
+    }
+
+    @Test
+    void testDeletePostThrowsExceptionOfFindById() {
+        Post post = new Post();
+        post.setId((long) 2);
+        Optional<Post> mockValue = Optional.empty();
+        when(postRepository.findById((long) 2)).thenReturn(mockValue);
+        PostNotDeletedException exception = assertThrows(PostNotDeletedException.class,
+                () -> postService.deletePost((long) 2));
+        assertEquals(exception.getMessage(), "指定された投稿が見つかりませんでした。");
     }
 
     @Test
