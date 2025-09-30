@@ -30,9 +30,9 @@ export const useLogin = () => {
                 },
             })
             return res;
-        } catch (error) {
+        } catch (error: any) {
             console.log(error);
-            throw createError({ statusCode: 500, statusMessage: 'ネットワークエラーが発生しました。', fatal: true })
+            throw new Error(error.data?.errorMessage);
         }
     }
 
