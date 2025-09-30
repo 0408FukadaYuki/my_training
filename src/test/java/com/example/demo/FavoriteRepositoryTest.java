@@ -9,7 +9,6 @@ import org.springframework.test.context.jdbc.Sql;
 
 import com.github.database.rider.spring.api.DBRider;
 import com.example.demo.model.Favorite;
-import com.example.demo.model.FavoritePK;
 import com.example.demo.model.Post;
 import com.example.demo.model.User;
 import com.example.demo.repository.FavoriteRepository;
@@ -25,20 +24,12 @@ class FavoriteRepositoryTest {
     @Test
     @DBRider
     void testFindByUser() throws Exception {
-        Favorite expectavorite = new Favorite();
-        Post post = new Post();
-        post.setId((long) 2);
-        FavoritePK favoritePK = new FavoritePK();
-        favoritePK.setPostId((long) 2);
-        favoritePK.setUserId("a23e4567-e89b-12d3-a456-426614174000");
-        User user = new User();
-        user.setUuid("a23e4567-e89b-12d3-a456-426614174000");
-        expectavorite.setFavoritePK(favoritePK);
-        expectavorite.setPost(post);
-        expectavorite.setUser(user);
+        User user = TestUtil.createUser1();
+        Post post = TestUtil.createPost((long) 2, user, "これはJunitのテストです", null, null);
+        Favorite expectavorite = TestUtil.createFavoite(user, post, null);
 
         User findUser = new User();
-        findUser.setUuid("a23e4567-e89b-12d3-a456-426614174000");
+        findUser.setUuid(TestUtil.TEST_UUID1);
         Iterable<Favorite> favorite = favoriteRepository.findByUser(findUser);
         favorite.forEach(f -> {
             assertEquals(expectavorite.getFavoritePK(), f.getFavoritePK());
