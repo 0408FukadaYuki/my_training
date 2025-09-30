@@ -38,22 +38,21 @@ public class UserServiceImpl implements UserService {
         try {
             Optional<User> user = userRepository.findByMail(LoginUserRequest.getMail());
             Boolean sucess = user
-                    .map(u -> u.getPassword().equals(createSHA256Hash(LoginUserRequest.getPassword()))).orElse(false);
+                    .map(u -> u.getPassword().equals(LoginUserRequest.getPassword())).orElse(false);
 
             LoginUserResponse loginUserResponse = new LoginUserResponse();
             if (sucess) {
-                loginUserResponse.setSuccees(true);
+                loginUserResponse.setSuccess(true);
                 loginUserResponse.setUser(user.get());
             } else {
-                loginUserResponse.setSuccees(false);
+                loginUserResponse.setSuccess(false);
                 loginUserResponse.setMessage("ユーザ名またはパスワードが違います");
             }
 
             return loginUserResponse;
         } catch (DataAccessException e) {
-            throw new PostNotCreatedException("予期せぬエラーが発生しました。");
+            throw new PostNotCreatedException("ログイン処理に失敗しました。");
         }
-
     }
 
     private User setCreateUserInfo(CreateUserRequest createUserInfo) {

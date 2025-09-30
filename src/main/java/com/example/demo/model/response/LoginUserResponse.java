@@ -9,7 +9,7 @@ import lombok.Data;
  */
 @Data
 public class LoginUserResponse {
-    Boolean succees;
+    Boolean success;
     String message;
     User user;
 }
