@@ -10,8 +10,8 @@ const state = reactive({
     password: '',
     showAlertFlag: false,
     alertMessage: "",
-    loadingValue:null,
-    showLoadingFlag:false
+    loadingValue: null,
+    showLoadingFlag: false
 })
 
 const schema = v.object({
