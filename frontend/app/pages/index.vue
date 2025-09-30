@@ -18,14 +18,25 @@ const schema = v.object({
 })
 
 async function submit() {
-    const response: LoginResponse = await login(state.email, state.password);
+    try {
+        const response: LoginResponse = await login(state.email, state.password);
+        if ('success' in response && response.success) {
+            state.showAlertFlag = false;
+            await navigateTo('/timeLine');
+        } else {
+            state.showAlertFlag = true;
+            state.alertMessage = response.message;
+        }
 
-    if (response.success) {
-        state.showAlertFlag = false;
-        await navigateTo('/timeLine');
-    } else {
-        state.showAlertFlag = true;
-        state.alertMessage = response.message;
+    } catch (error: any) {
+        //400,500番台の場合はエラーアラートを表示
+        if (error.message) {
+            state.showAlertFlag = true;
+            state.alertMessage = error.message;
+        } else {
+            //ネットワークエラーのerro.vueを表示
+            throw createError({ statusCode: 500, statusMessage: 'ネットワークエラーが発生しました。', fatal: true })
+        }
     }
 }
 </script>
@@ -37,7 +48,8 @@ async function submit() {
             <div class="mt-5 w-full text-center text-5xl h-1/5">
                 <h1>Log in</h1>
             </div>
-            <UForm :schema="schema" :state="state"class="space-y-8 w-3/4 mx-auto flex flex-col justify-items-center" @submit="submit">
+            <UForm :schema="schema" :state="state" class="space-y-8 w-3/4 mx-auto flex flex-col justify-items-center"
+                @submit="submit">
                 <UFormField name="email">
                     <UInput v-model="state.email" placeholder="メールアドレス" class="w-full" />
                 </UFormField>
