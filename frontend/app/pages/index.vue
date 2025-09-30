@@ -9,7 +9,9 @@ const state = reactive({
     email: '',
     password: '',
     showAlertFlag: false,
-    alertMessage: ""
+    alertMessage: "",
+    loadingValue:null,
+    showLoadingFlag:false
 })
 
 const schema = v.object({
@@ -19,8 +21,10 @@ const schema = v.object({
 
 async function submit() {
     try {
+        state.showLoadingFlag = true;
         const response: LoginResponse = await login(state.email, state.password);
-        if ('success' in response && response.success) {
+        state.showLoadingFlag = false;
+        if (response.success) {
             state.showAlertFlag = false;
             await navigateTo('/timeLine');
         } else {
@@ -29,6 +33,7 @@ async function submit() {
         }
 
     } catch (error: any) {
+        state.showLoadingFlag = false;
         //400,500番台の場合はエラーアラートを表示
         if (error.message) {
             state.showAlertFlag = true;
@@ -62,6 +67,7 @@ async function submit() {
                 </UButton>
             </UForm>
         </div>
+        <UProgress v-if=state.showLoadingFlag v-model="state.loadingValue"  class="mt-5 w-1/2"/>
         <UAlert v-if=state.showAlertFlag color="error" class="mt-5 w-1/2" :title=state.alertMessage />
     </UContainer>
 
