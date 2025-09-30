@@ -51,9 +51,8 @@ public class UserServiceImpl implements UserService {
 
             return loginUserResponse;
         } catch (DataAccessException e) {
-            throw new PostNotCreatedException("予期せぬエラーが発生しました。");
+            throw new PostNotCreatedException("ログイン処理に失敗しました。");
         }
-
     }
 
     private User setCreateUserInfo(CreateUserRequest createUserInfo) {
