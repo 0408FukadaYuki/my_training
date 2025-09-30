@@ -67,7 +67,7 @@ async function submit() {
                 </UButton>
             </UForm>
         </div>
-        <UProgress v-if=state.showLoadingFlag v-model="state.loadingValue"  class="mt-5 w-1/2"/>
+        <UProgress v-if="state.showLoadingFlag" v-model="state.loadingValue"  class="mt-5 w-1/2"/>
         <UAlert v-if=state.showAlertFlag color="error" class="mt-5 w-1/2" :title=state.alertMessage />
     </UContainer>
 
