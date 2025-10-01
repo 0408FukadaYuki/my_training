@@ -37,7 +37,7 @@ public class FavoriteServiceImpl implements FavoriteService {
         try {
             User findUserInfo = new User();
             findUserInfo.setUuid(uuid);
-            Iterable<Favorite> favorites = favoriteRepository.findByUser(findUserInfo);
+            List<Favorite> favorites = favoriteRepository.findByUser(findUserInfo);
             List<UserFavoriteResponse> response = new ArrayList<>();
             favorites.forEach(favorite ->{
                 UserFavoriteResponse res = new UserFavoriteResponse();
