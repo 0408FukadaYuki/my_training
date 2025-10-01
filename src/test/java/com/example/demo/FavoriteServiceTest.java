@@ -74,7 +74,7 @@ public class FavoriteServiceTest {
         User user2 = TestUtil.createUser2();
         Post post2 = TestUtil.createPost((long) 2, user2, "これはJunitのテストです", null, localDateTime);
         Favorite favorite2 = TestUtil.createFavoite(user2, post2, localDateTime);
-        Iterable<Favorite> mockResponse = new ArrayList<>(List.of(favorite1, favorite2));
+        List<Favorite> mockResponse = new ArrayList<>(List.of(favorite1, favorite2));
 
         User findUser = new User();
         findUser.setUuid(TestUtil.TEST_UUID1);

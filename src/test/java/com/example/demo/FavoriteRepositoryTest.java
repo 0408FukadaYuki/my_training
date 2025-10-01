@@ -1,6 +1,9 @@
 package com.example.demo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -30,7 +33,7 @@ class FavoriteRepositoryTest {
 
         User findUser = new User();
         findUser.setUuid(TestUtil.TEST_UUID1);
-        Iterable<Favorite> favorite = favoriteRepository.findByUser(findUser);
+        List<Favorite> favorite = favoriteRepository.findByUser(findUser);
         favorite.forEach(f -> {
             assertEquals(expectedFavorite.getFavoritePK(), f.getFavoritePK());
             assertEquals(expectedFavorite.getPost().getId(), f.getPost().getId());

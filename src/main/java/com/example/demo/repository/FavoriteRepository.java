@@ -1,5 +1,7 @@
 package com.example.demo.repository;
 
+import java.util.List;
+
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -9,5 +11,5 @@ import com.example.demo.model.User;
 
 @Repository
 public interface FavoriteRepository extends CrudRepository<Favorite, FavoritePK> {
-    Iterable<Favorite> findByUser(User user);
+    List<Favorite> findByUser(User user);
 }
