@@ -26,7 +26,7 @@ class FavoriteRepositoryTest {
     void testFindByUser() throws Exception {
         User user = TestUtil.createUser1();
         Post post = TestUtil.createPost((long) 2, user, "これはJunitのテストです", null, null);
-        Favorite expectavorite = TestUtil.createFavoite(user, post, null);
+        Favorite expectedFavorite = TestUtil.createFavoite(user, post, null);
 
         User findUser = new User();
         findUser.setUuid(TestUtil.TEST_UUID1);
