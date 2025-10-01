@@ -32,9 +32,9 @@ class FavoriteRepositoryTest {
         findUser.setUuid(TestUtil.TEST_UUID1);
         Iterable<Favorite> favorite = favoriteRepository.findByUser(findUser);
         favorite.forEach(f -> {
-            assertEquals(expectavorite.getFavoritePK(), f.getFavoritePK());
-            assertEquals(expectavorite.getPost().getId(), f.getPost().getId());
-            assertEquals(expectavorite.getUser().getUuid(), f.getUser().getUuid());
+            assertEquals(expectedFavorite.getFavoritePK(), f.getFavoritePK());
+            assertEquals(expectedFavorite.getPost().getId(), f.getPost().getId());
+            assertEquals(expectedFavorite.getUser().getUuid(), f.getUser().getUuid());
         });
     }
 
