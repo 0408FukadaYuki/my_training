@@ -2,6 +2,7 @@ package com.example.demo;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import com.example.demo.model.Favorite;
 import com.example.demo.model.FavoritePK;
@@ -18,7 +19,8 @@ public class TestUtil {
      * @return テスト用のユーザー（a23e4567-e89b-12d3-a456-426614174000）
      */
     public static User createUser1() {
-        return createUser(TEST_UUID1, "test_tarou", "テスト 太郎", "test_tarou@example.com", "テスト", LocalDate.of(1990, 1, 1), null, "test");
+        return createUser(TEST_UUID1, "test_tarou", "テスト 太郎", "test_tarou@example.com", "テスト", LocalDate.of(1990, 1, 1),
+                null, "test");
     }
 
     /**
@@ -26,24 +28,25 @@ public class TestUtil {
      * @return テスト用のユーザー（b23e4567-e89b-12d3-a456-426614174000）
      */
     public static User createUser2() {
-        return createUser(TEST_UUID2, "test_hanako", "テスト 花子", "test_tarou@example.com", "テスト", LocalDate.of(1990, 1, 1), null, "test");
+        return createUser(TEST_UUID2, "test_hanako", "テスト 花子", "test_tarou@example.com", "テスト",
+                LocalDate.of(1990, 1, 1), null, "test");
     }
 
     /**
      * ユーザーを作成します。パラメータがnullの場合は乱数で生成します。
      *
-     * @param uuid UUID（nullの場合は乱数で生成）
-     * @param userId ユーザーID（nullの場合は乱数で生成）
-     * @param name 名前（nullの場合は乱数で生成）
-     * @param mail メールアドレス（nullの場合は乱数で生成）
-     * @param profile プロフィール（nullの場合はデフォルト値）
+     * @param uuid      UUID（nullの場合は乱数で生成）
+     * @param userId    ユーザーID（nullの場合は乱数で生成）
+     * @param name      名前（nullの場合は乱数で生成）
+     * @param mail      メールアドレス（nullの場合は乱数で生成）
+     * @param profile   プロフィール（nullの場合はデフォルト値）
      * @param birthDate 生年月日（nullの場合はデフォルト値）
      * @param iconImage アイコン画像（nullの場合はnull）
-     * @param password パスワード（nullの場合はデフォルト値）
+     * @param password  パスワード（nullの場合はデフォルト値）
      * @return 作成されたユーザー
      */
     public static User createUser(String uuid, String userId, String name, String mail,
-                                  String profile, LocalDate birthDate, String iconImage, String password) {
+            String profile, LocalDate birthDate, String iconImage, String password) {
         User user = new User();
 
         String randomSuffix = UUID.randomUUID().toString().substring(0, 8);
@@ -111,7 +114,8 @@ public class TestUtil {
      * @param postCreatedAt
      * @return
      */
-    public static UserFavoriteResponse createUserFavoriteResponse(String uuid, Long postId, String userId, String userName,
+    public static UserFavoriteResponse createUserFavoriteResponse(String uuid, Long postId, String userId,
+            String userName,
             String content, Integer replyTo, LocalDateTime favoreteCreatedAt, LocalDateTime postCreatedAt) {
         UserFavoriteResponse userFavoriteResponse = new UserFavoriteResponse();
         userFavoriteResponse.setUuid(uuid);
