@@ -47,7 +47,7 @@ public class FavoriteServiceTest {
     }
 
     @Test
-    void testCreateFavoriteThrowException() {
+    void testCreateFavoriteThrowsException() {
         CreateFavoriteRequest createFavoriteRequest = new CreateFavoriteRequest();
         createFavoriteRequest.setUuid(TestUtil.TEST_UUID2);
         createFavoriteRequest.setPostId((long) 1);
