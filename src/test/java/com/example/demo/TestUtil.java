@@ -14,36 +14,49 @@ public class TestUtil {
     public static final String TEST_UUID2 = "b23e4567-e89b-12d3-a456-426614174000";
 
     /**
-     * 
+     *
      * @return テスト用のユーザー（a23e4567-e89b-12d3-a456-426614174000）
      */
     public static User createUser1() {
-        User user = new User();
-        user.setUuid(TEST_UUID1);
-        user.setUserId("test_tarou");
-        user.setName("テスト 太郎");
-        user.setMail("test_tarou@example.com");
-        user.setProfile("テスト");
-        user.setBirthDate(LocalDate.of(1990, 1, 1));
-        user.setIconImage(null);
-        user.setPassword("test");
-        return user;
+        return createUser(TEST_UUID1, "test_tarou", "テスト 太郎", "test_tarou@example.com", "テスト", LocalDate.of(1990, 1, 1), null, "test");
     }
 
     /**
-     * 
+     *
      * @return テスト用のユーザー（b23e4567-e89b-12d3-a456-426614174000）
      */
     public static User createUser2() {
+        return createUser(TEST_UUID2, "test_hanako", "テスト 花子", "test_tarou@example.com", "テスト", LocalDate.of(1990, 1, 1), null, "test");
+    }
+
+    /**
+     * ユーザーを作成します。パラメータがnullの場合は乱数で生成します。
+     *
+     * @param uuid UUID（nullの場合は乱数で生成）
+     * @param userId ユーザーID（nullの場合は乱数で生成）
+     * @param name 名前（nullの場合は乱数で生成）
+     * @param mail メールアドレス（nullの場合は乱数で生成）
+     * @param profile プロフィール（nullの場合はデフォルト値）
+     * @param birthDate 生年月日（nullの場合はデフォルト値）
+     * @param iconImage アイコン画像（nullの場合はnull）
+     * @param password パスワード（nullの場合はデフォルト値）
+     * @return 作成されたユーザー
+     */
+    public static User createUser(String uuid, String userId, String name, String mail,
+                                  String profile, LocalDate birthDate, String iconImage, String password) {
         User user = new User();
-        user.setUuid(TEST_UUID2);
-        user.setUserId("test_hanako");
-        user.setName("テスト 花子");
-        user.setMail("test_tarou@example.com");
-        user.setProfile("テスト");
-        user.setBirthDate(LocalDate.of(1990, 1, 1));
-        user.setIconImage(null);
-        user.setPassword("test");
+
+        String randomSuffix = UUID.randomUUID().toString().substring(0, 8);
+
+        user.setUuid(uuid != null ? uuid : UUID.randomUUID().toString());
+        user.setUserId(userId != null ? userId : "user_" + randomSuffix);
+        user.setName(name != null ? name : "テストユーザー_" + randomSuffix);
+        user.setMail(mail != null ? mail : "test_" + randomSuffix + "@example.com");
+        user.setProfile(profile != null ? profile : "テスト");
+        user.setBirthDate(birthDate != null ? birthDate : LocalDate.of(1990, 1, 1));
+        user.setIconImage(iconImage);
+        user.setPassword(password != null ? password : "test");
+
         return user;
     }
 
