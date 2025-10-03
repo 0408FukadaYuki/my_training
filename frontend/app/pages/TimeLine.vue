@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { error } from 'console';
-
 const { getPost } = usePost()
 const postStore = usePostStore();
 const toast = useToast()
