@@ -10,7 +10,7 @@ import com.example.demo.exception.FavoriteNotGetException;
 import com.example.demo.exception.NotLoginUserException;
 import com.example.demo.exception.PostNotCreatedException;
 import com.example.demo.exception.PostNotDeletedException;
-import com.example.demo.exception.PostNotGetException;
+import com.example.demo.exception.PostNotFoundException;
 import com.example.demo.exception.UserNotCreatedException;
 import com.example.demo.model.ErrorResponseBody;
 
@@ -25,8 +25,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponseBody);
     }
 
-    @ExceptionHandler(PostNotGetException.class)
-    public ResponseEntity<ErrorResponseBody> handlePostNotGetException(PostNotCreatedException e) {
+    @ExceptionHandler(PostNotFoundException.class)
+    public ResponseEntity<ErrorResponseBody> handlePostNotGetException(PostNotFoundException e) {
         ErrorResponseBody errorResponseBody = new ErrorResponseBody();
         errorResponseBody.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
         errorResponseBody.setErrorMessage(e.getMessage());

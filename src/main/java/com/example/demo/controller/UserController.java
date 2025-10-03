@@ -8,14 +8,12 @@ import com.example.demo.model.request.LoginUserRequest;
 import com.example.demo.model.response.LoginUserResponse;
 import com.example.demo.service.UserService;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @RestController
 @RequestMapping("/user")
-@CrossOrigin(origins = "http://localhost:3000")
 public class UserController {
 
     @Autowired

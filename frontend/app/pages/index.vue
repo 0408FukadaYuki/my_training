@@ -26,7 +26,7 @@ async function submit() {
         state.showLoadingFlag = false;
         if (response.success) {
             state.showAlertFlag = false;
-            await navigateTo('/timeLine');
+            await navigateTo('/timeline');
         } else {
             state.showAlertFlag = true;
             state.alertMessage = response.message;

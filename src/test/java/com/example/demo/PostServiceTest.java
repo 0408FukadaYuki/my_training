@@ -22,7 +22,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import com.example.demo.exception.PostNotCreatedException;
 import com.example.demo.exception.PostNotDeletedException;
-import com.example.demo.exception.PostNotGetException;
+import com.example.demo.exception.PostNotFoundException;
 import com.example.demo.model.Post;
 import com.example.demo.model.User;
 import com.example.demo.model.request.CreatePostRequest;
@@ -172,7 +172,7 @@ public class PostServiceTest {
         DataAccessException dataAccessException = new DataAccessException("error") {
         };
         when(postRepository.findAll()).thenThrow(dataAccessException);
-        PostNotGetException exception = assertThrows(PostNotGetException.class, () -> postService.findAllPost());
+        PostNotFoundException exception = assertThrows(PostNotFoundException.class, () -> postService.findAllPost());
         assertEquals(exception.getMessage(), "投稿を取得できませんでした。");
     }
 }
