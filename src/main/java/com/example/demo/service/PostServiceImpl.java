@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.exception.PostNotCreatedException;
 import com.example.demo.exception.PostNotDeletedException;
-import com.example.demo.exception.PostNotGetException;
+import com.example.demo.exception.PostNotFoundException;
 import com.example.demo.model.Post;
 import com.example.demo.model.User;
 import com.example.demo.model.request.CreatePostRequest;
@@ -74,7 +74,7 @@ public class PostServiceImpl implements PostService {
             });
             return response;
         } catch (Exception e) {
-            throw new PostNotGetException("投稿を取得できませんでした。");
+            throw new PostNotFoundException("投稿を取得できませんでした。");
         }
 
     }
