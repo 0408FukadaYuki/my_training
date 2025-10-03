@@ -41,7 +41,7 @@ const submit = async () => {
             state.showAlertFlag = true;
             state.alertMessage = error.message;
         } else {
-            //ネットワークエラーのerro.vueを表示
+            //ネットワークエラーのerror.vueを表示
             throw createError({ statusCode: 500, statusMessage: 'ネットワークエラーが発生しました。', fatal: true })
         }
     }
@@ -72,5 +72,4 @@ const submit = async () => {
         <UProgress v-if="state.showLoadingFlag" v-model="state.loadingValue"  class="mt-5 w-1/2"/>
         <UAlert v-if=state.showAlertFlag color="error" class="mt-5 w-1/2" :title=state.alertMessage />
     </UContainer>
-
 </template>
