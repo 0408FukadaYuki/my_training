@@ -13,7 +13,7 @@ export interface User {
 export interface LoginResponse {
     success: boolean,
     message: string,
-    User: User,
+    user: User,
 }
 
 export const useLogin = () => {
