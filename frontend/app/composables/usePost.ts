@@ -24,5 +24,22 @@ export const usePost = () => {
             throw new Error(error.data?.errorMessage);
         }
     }
-    return { getPost };
+
+    const createPost = async (userId: string, content: string, replyTo: number | null): Promise<void> => {
+        try {
+            await $fetch('/post/create', {
+                baseURL: config.public.apiBase,
+                method: 'POST',
+                body: {
+                    userId: userId,
+                    content: content,
+                    replyTo: replyTo,
+                }
+            })
+        } catch (error: any) {
+            console.log(error);
+            throw new Error(error.data?.errorMessage);
+        }
+    }
+    return { getPost, createPost };
 }
