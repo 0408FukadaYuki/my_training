@@ -4,6 +4,7 @@ import * as v from 'valibot'
 import type { LoginResponse } from '~/composables/useLogin'
 
 const { login } = useLogin();
+const userStore = useUserStore();
 
 const state = reactive({
     email: '',
@@ -19,12 +20,13 @@ const schema = v.object({
     password: v.pipe(v.string(), v.nonEmpty('パスワードを入力してください'))
 })
 
-async function submit() {
+const submit = async () => {
     try {
         state.showLoadingFlag = true;
         const response: LoginResponse = await login(state.email, state.password);
         state.showLoadingFlag = false;
         if (response.success) {
+            userStore.setLoginUserInfo(response.user);
             state.showAlertFlag = false;
             await navigateTo('/timeline');
         } else {
