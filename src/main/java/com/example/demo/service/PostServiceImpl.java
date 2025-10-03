@@ -60,7 +60,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public List<GetAllPostResponse> findAllPost() {
         try {
-            Iterable<Post> posts = postRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
+            List<Post> posts = postRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
             List<GetAllPostResponse> response = new ArrayList<>();
             posts.forEach(post -> {
                 GetAllPostResponse res = new GetAllPostResponse();

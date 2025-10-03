@@ -59,7 +59,7 @@ class PostRepositoryTest {
     @Test
     @DBRider
     void testFindAllPost() throws Exception {
-        Iterable<Post> response = postRepository.findAll();
+        List<Post> response = postRepository.findAll();
         List<Post> actual = new ArrayList<>();
         response.forEach(actual::add);
         assertEquals(13, actual.size());
