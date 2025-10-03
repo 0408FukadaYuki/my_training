@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,7 +60,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public List<GetAllPostResponse> findAllPost() {
         try {
-            Iterable<Post> posts = postRepository.findAll();
+            List<Post> posts = postRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
             List<GetAllPostResponse> response = new ArrayList<>();
             posts.forEach(post -> {
                 GetAllPostResponse res = new GetAllPostResponse();

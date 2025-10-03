@@ -18,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import com.example.demo.exception.PostNotCreatedException;
@@ -158,9 +159,9 @@ public class PostServiceTest {
         post2.setReplyTo(null);
         post2.setCreatedAt(localDateTime);
 
-        Iterable<Post> mockResponse = new ArrayList<>(List.of(post1, post2));
+        List<Post> mockResponse = new ArrayList<>(List.of(post1, post2));
 
-        when(postRepository.findAll()).thenReturn(mockResponse);
+        when(postRepository.findAll(Sort.by(Sort.Direction.ASC, "createdAt"))).thenReturn(mockResponse);
 
         List<GetAllPostResponse> acutualResponse = postService.findAllPost();
 
