@@ -6,6 +6,11 @@ interface Props {
 
 const props = defineProps<Props>();
 
+const createdDate = computed(() => {
+    const date = new Date(props.post.createdAt);
+    return date.toLocaleString();
+})
+
 </script>
 
 <template>
@@ -15,6 +20,7 @@ const props = defineProps<Props>();
                 <UAvatar src="/img/exampleImage.png" size="sm" />
                 <div class="ml-1">{{ post.userName }}</div>
                 <div class="ml-1 text-gray-400">@{{ post.userId }}</div>
+                <div class="ml-5">{{ createdDate }}</div>
             </div>
         </template>
 
