@@ -6,12 +6,16 @@ interface Reactive {
     active: string;
     myPosts: Post[];
     myFavorite: Post[];
+    showAlertFlag: boolean;
+    alertMessage: string,
 }
 
 const state = reactive<Reactive>({
     active: '0',
     myPosts: [],
     myFavorite: [],
+    showAlertFlag: false,
+    alertMessage: "",
 })
 const items = [
     {
@@ -31,7 +35,8 @@ onMounted(async () => {
     } catch (error: any) {
         //400,500番台の場合はエラーアラートを表示
         if (error.message) {
-            
+            state.showAlertFlag = true;
+            state.alertMessage = error.message;
         } else {
             //ネットワークエラーのerror.vueを表示
             throw createError({ statusCode: 500, statusMessage: 'ネットワークエラーが発生しました。', fatal: true })
@@ -52,10 +57,11 @@ const getPost = computed(() => {
 
 <template>
     <UContainer class="h-screen flex flex-col">
+        <UAlert v-if="state.showAlertFlag" color="error" class="w-1/2 mx-auto" :title=state.alertMessage />
         <div class=" w-full flex-col mt-3">
             <div class="h-16 flex justify-center items-center">
-                    <UAvatar class="mr-5" src="/img/exampleImage.png" size="xl" />
-                    <div class="text-2xl">{{ userStore.getLoginUserName }}@{{ userStore.getLoginUserId }}</div>
+                <UAvatar class="mr-5" src="/img/exampleImage.png" size="xl" />
+                <div class="text-2xl">{{ userStore.getLoginUserName }}@{{ userStore.getLoginUserId }}</div>
             </div>
             <div class="mt-3 text-xl">
                 <div class="mx-auto w-4/5">{{ userStore.getLoginUserProfile }}</div>
