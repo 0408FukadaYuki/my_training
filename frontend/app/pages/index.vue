@@ -4,6 +4,7 @@ import * as v from 'valibot'
 import type { LoginResponse } from '~/composables/useLogin'
 
 const { login } = useLogin();
+const userStore = useUserStore();
 
 const state = reactive({
     email: '',
@@ -19,12 +20,13 @@ const schema = v.object({
     password: v.pipe(v.string(), v.nonEmpty('パスワードを入力してください'))
 })
 
-async function submit() {
+const submit = async () => {
     try {
         state.showLoadingFlag = true;
         const response: LoginResponse = await login(state.email, state.password);
         state.showLoadingFlag = false;
         if (response.success) {
+            userStore.setLoginUserInfo(response.user);
             state.showAlertFlag = false;
             await navigateTo('/timeline');
         } else {
@@ -39,7 +41,7 @@ async function submit() {
             state.showAlertFlag = true;
             state.alertMessage = error.message;
         } else {
-            //ネットワークエラーのerro.vueを表示
+            //ネットワークエラーのerror.vueを表示
             throw createError({ statusCode: 500, statusMessage: 'ネットワークエラーが発生しました。', fatal: true })
         }
     }
@@ -70,5 +72,4 @@ async function submit() {
         <UProgress v-if="state.showLoadingFlag" v-model="state.loadingValue"  class="mt-5 w-1/2"/>
         <UAlert v-if=state.showAlertFlag color="error" class="mt-5 w-1/2" :title=state.alertMessage />
     </UContainer>
-
 </template>
