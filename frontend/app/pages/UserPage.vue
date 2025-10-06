@@ -25,13 +25,13 @@ const items = [
 onMounted(async () => {
     try {
         state.myPosts = postStore.posts.filter((post) => {
-            return post.uuid === userStore.getLoginUserId;
+            return post.uuid === userStore.getLoginUserUuid;
         });
-        state.myFavorite = await getUserFavorite(userStore.getLoginUserId);
+        state.myFavorite = await getUserFavorite(userStore.getLoginUserUuid);
     } catch (error: any) {
         //400,500番台の場合はエラーアラートを表示
         if (error.message) {
-
+            
         } else {
             //ネットワークエラーのerror.vueを表示
             throw createError({ statusCode: 500, statusMessage: 'ネットワークエラーが発生しました。', fatal: true })
@@ -52,16 +52,16 @@ const getPost = computed(() => {
 
 <template>
     <UContainer class="h-screen flex flex-col">
-        <div class="bg-green-300 w-full flex-col h-32 mt-3">
-            <div class="bg-green-600 flex justify-center">
-                <UAvatar src="/img/exampleImage.png" size="xl" />
-                <div class="text-2xl">山田太郎@yamda.tarou</div>
+        <div class=" w-full flex-col mt-3">
+            <div class="h-16 flex justify-center items-center">
+                    <UAvatar class="mr-5" src="/img/exampleImage.png" size="xl" />
+                    <div class="text-2xl">{{ userStore.getLoginUserName }}@{{ userStore.getLoginUserId }}</div>
             </div>
-            <div class="bg-blue-400 mt-5 text-xl">
-                新しいことにチャレンジするのが好きです。趣味は読書と散歩、コーヒーが欠かせません。
+            <div class="mt-3 text-xl">
+                <div class="mx-auto w-4/5">{{ userStore.getLoginUserProfile }}</div>
             </div>
         </div>
-        <div class="bg-red-300 w-full flex-col justify-center">
+        <div class="w-full mt-4 flex-col justify-center">
             <UTabs v-model="state.active" :items="items"></UTabs>
             <div>
                 <Post v-for="post in getPost" :post="post"></Post>
