@@ -78,7 +78,7 @@ public class FavoriteServiceTest {
 
         User findUser = new User();
         findUser.setUuid(TestUtil.TEST_UUID1);
-        when(favoriteRepository.findByUser(findUser)).thenReturn(mockResponse);
+        when(favoriteRepository.findByUserOrderByCreatedAtDesc(findUser)).thenReturn(mockResponse);
 
         List<UserFavoriteResponse> acutualResponse = favoriteService
                 .getFavorite(TestUtil.TEST_UUID1);
@@ -91,7 +91,7 @@ public class FavoriteServiceTest {
         };
         User findUser = new User();
         findUser.setUuid(TestUtil.TEST_UUID1);
-        when(favoriteRepository.findByUser(findUser)).thenThrow(dataAccessException);
+        when(favoriteRepository.findByUserOrderByCreatedAtDesc(findUser)).thenThrow(dataAccessException);
         FavoriteNotGetException exception = assertThrows(FavoriteNotGetException.class,
                 () -> favoriteService.getFavorite(TestUtil.TEST_UUID1));
         assertEquals(exception.getMessage(), "お気に入りを取得できませんでした。");
