@@ -1,14 +1,17 @@
 <script setup lang="ts">
+const { getUserFavorite } = useFavorite();
 const postStore = usePostStore();
 const userStore = useUserStore();
 interface Reactive {
-    active :string;
-    showData:Post[];
+    active: string;
+    myPosts: Post[];
+    myFavorite: Post[];
 }
 
 const state = reactive<Reactive>({
     active: '0',
-    showData: [],
+    myPosts: [],
+    myFavorite: [],
 })
 const items = [
     {
@@ -19,44 +22,32 @@ const items = [
     }
 ]
 
-const getPost = computed(() => {
-    if (state.active === '0') {
-        return postStore.posts.filter((post)=>{
+onMounted(async () => {
+    try {
+        state.myPosts = postStore.posts.filter((post) => {
             return post.uuid === userStore.getLoginUserId;
         });
-    } else if (state.active === '1') {
-        return samplePosts;
-    } 
-})
-const samplePosts: Post[] = [
-    {
-        uuid: "123e4567-e89b-12d3-a456-426614174000",
-        postId: 1,
-        userId: "user_001",
-        userName: "TaroYamada",
-        content: "今日はとても良い天気ですね！",
-        replyTo: "",
-        createdAt: "2025-10-06T10:16:00Z"
-    },
-    {
-        uuid: "223e4567-e89b-12d3-a456-426614174001",
-        postId: 2,
-        userId: "user_002",
-        userName: "HanakoSaito",
-        content: "明日の予定は何ですか？",
-        replyTo: "123e4567-e89b-12d3-a456-426614174000",
-        createdAt: "2025-10-06T10:20:00Z"
-    },
-    {
-        uuid: "323e4567-e89b-12d3-a456-426614174002",
-        postId: 3,
-        userId: "user_003",
-        userName: "KenSuzuki",
-        content: "新しいプロジェクトが楽しみです！",
-        replyTo: "",
-        createdAt: "2025-10-06T10:25:00Z"
+        state.myFavorite = await getUserFavorite(userStore.getLoginUserId);
+    } catch (error: any) {
+        //400,500番台の場合はエラーアラートを表示
+        if (error.message) {
+
+        } else {
+            //ネットワークエラーのerror.vueを表示
+            throw createError({ statusCode: 500, statusMessage: 'ネットワークエラーが発生しました。', fatal: true })
+        }
     }
-];
+})
+
+const getPost = computed(() => {
+    if (state.active === '0') {
+        console.log('MyPosts' + state.myPosts)
+        return state.myPosts;
+    } else {
+        console.log('MyFavorite' + state.myFavorite)
+        return state.myFavorite;
+    }
+})
 </script>
 
 <template>
