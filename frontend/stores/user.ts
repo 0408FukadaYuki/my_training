@@ -17,7 +17,7 @@ export const useUserStore = defineStore('user', {
     },
 
     actions: {
-        setLoginUserInfo (user: User) {
+        setLoginUserInfo(user: User) {
             this.LoginUser.uuid = user.uuid;
             this.LoginUser.userId = user.userId;
             this.LoginUser.name = user.name;
@@ -30,8 +30,17 @@ export const useUserStore = defineStore('user', {
     },
 
     getters: {
-        getLoginUserId:(state) => {
+        getLoginUserUuid: (state) => {
             return state.LoginUser.uuid;
+        },
+        getLoginUserName: (state) => {
+            return state.LoginUser.name;
+        },
+        getLoginUserId: (state) => {
+            return state.LoginUser.userId;
+        },
+        getLoginUserProfile:(state)=>{
+            return state.LoginUser.profile;
         }
     },
 })
