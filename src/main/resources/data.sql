@@ -1,5 +1,5 @@
 INSERT INTO users (uuid, user_id, name, mail, profile, birth_date, icon_image, pass_word)
-VALUES ('123e4567-e89b-12d3-a456-426614174000', 'suzuki_tarou', '鈴木 太郎', 'tanaka@example.com', 'おはよう', '1985-05-15', '', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08');
+VALUES ('123e4567-e89b-12d3-a456-426614174000', 'suzuki_tarou', '鈴木 太郎', 'tanaka@example.com', '好奇心旺盛で多くのことに挑戦します。読書や旅行が好きで人と話すことを大切にし常に成長を目指しています。日々成長、虎視眈々、冷静沈着、日進月歩、晴耕雨読、大同小異、狂喜乱舞。皆さんよろしくお願いします。', '1985-05-15', '', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08');
 
 INSERT INTO users (uuid, user_id, name, mail, profile, birth_date, icon_image, pass_word)
 VALUES ('223e4567-e89b-12d3-a456-426614174001', 'matuda_hanako', '松田 花子', 'suzuki@example.com', 'こんにちは', '1990-08-10', '', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08');
