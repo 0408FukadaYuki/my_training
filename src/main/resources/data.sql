@@ -40,6 +40,11 @@ VALUES ('223e4567-e89b-12d3-a456-426614174001', '返信待ってます。', NULL
 INSERT INTO posts (user_id, content, reply_to, created_at)
 VALUES ('323e4567-e89b-12d3-a456-426614174002', 'これからよろしくお願いします。', NULL, '2025-09-08 14:00:00');
 
+INSERT INTO favorites (user_id, post_id, created_at) 
+VALUES('123e4567-e89b-12d3-a456-426614174000', 2, '2025-09-08 14:10:00' );
 
 INSERT INTO favorites (user_id, post_id, created_at) 
-VALUES('123e4567-e89b-12d3-a456-426614174000', 2, '2025-09-08 14:10:00' )
+VALUES('123e4567-e89b-12d3-a456-426614174000', 4, '2025-09-09 14:10:00' );
+
+INSERT INTO favorites (user_id, post_id, created_at) 
+VALUES('123e4567-e89b-12d3-a456-426614174000', 6, '2025-09-10 14:10:00' );
