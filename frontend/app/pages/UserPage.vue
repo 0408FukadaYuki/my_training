@@ -22,7 +22,7 @@ const items = [
         label: '投稿',
     },
     {
-        label: 'いいね',
+        label: 'お気に入り',
     }
 ]
 
