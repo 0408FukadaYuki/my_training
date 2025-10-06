@@ -17,6 +17,6 @@ public class UserFavoriteResponse {
     private String userName;
     private String content;
     private Integer replyTo;
-    private LocalDateTime postCreatedAt;
+    private LocalDateTime createdAt;
     private LocalDateTime favoriteCreatedAt;
 }

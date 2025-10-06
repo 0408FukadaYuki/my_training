@@ -49,8 +49,8 @@ public class FavoriteServiceImpl implements FavoriteService {
                 res.setUserId(postUser.getUserId());
                 res.setContent(postInfo.getContent());
                 res.setReplyTo(postInfo.getReplyTo());
-                res.setPostCreatedAt(postInfo.getCreatedAt());
-                res.setFavoriteCreatedAt(favorite.getCreatedAt());
+                res.setCreatedAt(postInfo.getCreatedAt());
+                res.setFavoriteCreatedAt(null);
                 response.add(res);
             });
             return response;

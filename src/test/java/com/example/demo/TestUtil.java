@@ -110,13 +110,14 @@ public class TestUtil {
      * @param userName
      * @param content
      * @param replyTo
-     * @param favoreteCreatedAt
+     * @param             String content, Integer replyTo, LocalDateTime favoriteCreatedAt, LocalDateTime postCreatedAt) {
+
      * @param postCreatedAt
      * @return
      */
     public static UserFavoriteResponse createUserFavoriteResponse(String uuid, Long postId, String userId,
             String userName,
-            String content, Integer replyTo, LocalDateTime favoreteCreatedAt, LocalDateTime postCreatedAt) {
+            String content, Integer replyTo, LocalDateTime favoriteCreatedAt, LocalDateTime postCreatedAt) {
         UserFavoriteResponse userFavoriteResponse = new UserFavoriteResponse();
         userFavoriteResponse.setUuid(uuid);
         userFavoriteResponse.setPostId(postId);
@@ -124,8 +125,8 @@ public class TestUtil {
         userFavoriteResponse.setUserName(userName);
         userFavoriteResponse.setContent(content);
         userFavoriteResponse.setReplyTo(replyTo);
-        userFavoriteResponse.setPostCreatedAt(postCreatedAt);
-        userFavoriteResponse.setFavoriteCreatedAt(favoreteCreatedAt);
+        userFavoriteResponse.setCreatedAt(postCreatedAt);
+        userFavoriteResponse.setFavoriteCreatedAt(favoriteCreatedAt);
         return userFavoriteResponse;
     }
 }
