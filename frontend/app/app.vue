@@ -1,6 +1,6 @@
 <template>
   <UApp>
-    <UHeader>
+    <UHeader  to="/timeline">
       <template #title>
         Twitter
       </template>
