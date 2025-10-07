@@ -28,9 +28,6 @@ const items = [
 
 onMounted(async () => {
     try {
-        state.myPosts = postStore.posts.filter((post) => {
-            return post.uuid === userStore.getLoginUserUuid;
-        });
         state.myFavorite = await getUserFavorite(userStore.getLoginUserUuid);
     } catch (error: any) {
         //400,500番台の場合はエラーアラートを表示
@@ -46,10 +43,11 @@ onMounted(async () => {
 
 const getPost = computed(() => {
     if (state.active === '0') {
-        console.log('MyPosts' + state.myPosts)
+        state.myPosts = postStore.posts.filter((post) => {
+            return post.uuid === userStore.getLoginUserUuid;
+        });
         return state.myPosts;
     } else {
-        console.log('MyFavorite' + state.myFavorite)
         return state.myFavorite;
     }
 })
