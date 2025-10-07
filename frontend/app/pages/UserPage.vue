@@ -70,7 +70,7 @@ const getPost = computed(() => {
         <div class="w-full mt-4 flex-col justify-center">
             <UTabs v-model="state.active" :items="items"></UTabs>
             <div>
-                <Post v-for="post in getPost" :post="post"></Post>
+                <Post v-for="post in getPost" :post="post" :key="post.postId"></Post>
             </div>
         </div>
     </UContainer>

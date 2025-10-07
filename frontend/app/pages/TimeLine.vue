@@ -56,7 +56,7 @@ const refreshPostData = async () => {
         <UAlert v-if="state.showAlertFlag" color="error" class="w-1/2" :title=state.alertMessage />
         <div class="h-full w-1/2 flex-col items-center justify-items-center hidden-scrollbar bg-white">
             <CreatePost @refreshPostData="refreshPostData" @showErrorToast="showToast"></CreatePost>
-            <Post v-for="post in postStore.getPosts" :post="post"></Post>
+            <Post v-for="post in postStore.getPosts" :post="post" :key="post.postId"></Post>
         </div>
     </UContainer>
 </template>
