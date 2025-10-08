@@ -1,15 +1,46 @@
 <script setup lang="ts">
+import 'bootstrap-icons/font/bootstrap-icons.css';
+const { createFavorite, deleteFavorite } = useFavorite();
+const userStore = useUserStore();
+
+interface Emits {
+    (event: "refreshPostData"): void,
+    (event: "showToast", title: string, description: string): void,
+}
+
+const emit = defineEmits<Emits>();
 
 interface Props {
     post: Post,
 }
-
 const props = defineProps<Props>();
 
 const createdDate = computed(() => {
     const date = new Date(props.post.createdAt);
     return date.toLocaleString();
 })
+
+const submitFavoriteInfo = (async () => {
+    try {
+        if (props.post.favorite) {
+            await deleteFavorite(userStore.getLoginUserUuid, props.post.postId);
+            emit("showToast", "success", "お気に入りを削除しました。");
+            emit("refreshPostData");
+        } else {
+            await createFavorite(userStore.getLoginUserUuid, props.post.postId);
+            emit("showToast", "success", "お気に入りを保存しました。");
+            emit("refreshPostData");
+        }
+    } catch (error: any) {
+        //400,500番台の場合はエラートーストを表示
+        if (error.message) {
+            emit("showToast", "error", error.message);
+        } else {
+            //ネットワークエラーのerror.vueを表示
+            throw createError({ statusCode: 500, statusMessage: 'ネットワークエラーが発生しました。', fatal: true })
+        }
+    }
+});
 
 </script>
 
@@ -29,9 +60,14 @@ const createdDate = computed(() => {
         </div>
 
         <template #footer>
-            <div class="h-8 flex ">
-                <UButton>リプライ</UButton>
-                <UButton>お気に入り</UButton>
+            <div class="h-8 flex justify-center">
+                <div class="mx-auto cursor-pointer">
+                    <i class="bi bi-reply hover:text-blue-400"></i>
+                </div>
+                <div @click="submitFavoriteInfo" class="mx-auto cursor-pointer">
+                    <i v-if="props.post.favorite" class="bi bi-star-fill text-amber-400"></i>
+                    <i v-else class="bi bi-star hover:text-amber-400"></i>
+                </div>
             </div>
         </template>
     </UCard>
