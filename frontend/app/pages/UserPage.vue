@@ -1,7 +1,9 @@
 <script setup lang="ts">
+const { getPost } = usePost()
 const { getUserFavorite } = useFavorite();
 const postStore = usePostStore();
 const userStore = useUserStore();
+const toast = useToast()
 interface Reactive {
     active: string;
     myPosts: Post[];
@@ -41,7 +43,7 @@ onMounted(async () => {
     }
 })
 
-const getPost = computed(() => {
+const getShowPost = computed(() => {
     if (state.active === '0') {
         state.myPosts = postStore.posts.filter((post) => {
             return post.uuid === userStore.getLoginUserUuid;
@@ -51,6 +53,31 @@ const getPost = computed(() => {
         return state.myFavorite;
     }
 })
+
+const showToast = (title: string, description: string) => {
+    toast.add({
+        title: title,
+        description: description,
+        color: title === "error" ? "error" : "success"
+    })
+}
+
+const refreshPostData = async () => {
+    try {
+        const posts: Post[] = await getPost(userStore.getLoginUserUuid);
+        state.myFavorite = await getUserFavorite(userStore.getLoginUserUuid);
+        postStore.posts = [...posts];
+    } catch (error: any) {
+        //400,500番台の場合はエラーアラートを表示
+        if (error.message) {
+            state.showAlertFlag = true;
+            state.alertMessage = error.message;
+        } else {
+            //ネットワークエラーのerror.vueを表示
+            throw createError({ statusCode: 500, statusMessage: 'ネットワークエラーが発生しました。', fatal: true })
+        }
+    }
+}
 </script>
 
 <template>
@@ -68,7 +95,8 @@ const getPost = computed(() => {
         <div class="w-full mt-4 flex-col justify-center">
             <UTabs v-model="state.active" :items="items"></UTabs>
             <div>
-                <Post v-for="post in getPost" :post="post" :key="post.postId"></Post>
+                <Post v-for="post in getShowPost" :post="post" :key="post.postId"
+                    @refreshPostData="refreshPostData" @showToast="showToast"></Post>
             </div>
         </div>
     </UContainer>
