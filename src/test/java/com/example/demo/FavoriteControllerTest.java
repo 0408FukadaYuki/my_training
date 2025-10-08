@@ -10,6 +10,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -21,6 +22,7 @@ import java.util.List;
 
 import com.example.demo.controller.FavoriteController;
 import com.example.demo.model.request.CreateFavoriteRequest;
+import com.example.demo.model.request.DeleteFavoriteRequest;
 import com.example.demo.model.response.UserFavoriteResponse;
 import com.example.demo.service.FavoriteService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -51,6 +53,20 @@ class FavoriteControllerTest {
                                 .content(request))
                                 .andExpect(status().isOk());
                 verify(favoriteService, times(1)).createFavorite(createFavoriteRequest);
+        }
+
+        @Test
+        void testDeleteFavorite() throws Exception {
+                DeleteFavoriteRequest deleteFavoriteRequest = new DeleteFavoriteRequest();
+                deleteFavoriteRequest.setUuid(TestUtil.TEST_UUID1);
+                deleteFavoriteRequest.setPostId((long) 1);
+
+                String request = objectMapper.writeValueAsString(deleteFavoriteRequest);
+                mockMvc.perform(delete("/favorite/delete")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(request))
+                                .andExpect(status().isOk());
+                verify(favoriteService, times(1)).deleteFavorite(deleteFavoriteRequest);
         }
 
         @Test
