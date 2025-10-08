@@ -7,14 +7,15 @@ export interface Post {
     content: string;
     replyTo: string;
     createdAt: string;
+    favorite:boolean;
 }
 
 
 export const usePost = () => {
     const config = useRuntimeConfig()
-    const getPost = async (): Promise<Post[]> => {
+    const getPost = async (uuid:string): Promise<Post[]> => {
         try {
-            const res: Post[] = await $fetch('/post/all', {
+            const res: Post[] = await $fetch(`/post/all/${uuid}`, {
                 baseURL: config.public.apiBase,
                 method: 'GET',
             })
