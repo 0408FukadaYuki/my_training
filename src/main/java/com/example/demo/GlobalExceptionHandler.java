@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.example.demo.exception.FavoriteNotCreatedException;
+import com.example.demo.exception.FavoriteNotDeletedException;
 import com.example.demo.exception.FavoriteNotGetException;
 import com.example.demo.exception.NotLoginUserException;
 import com.example.demo.exception.PostNotCreatedException;
@@ -67,6 +68,14 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(PostNotDeletedException.class)
     public ResponseEntity<ErrorResponseBody> handlePostNotDeletedException(PostNotDeletedException e) {
+        ErrorResponseBody errorResponseBody = new ErrorResponseBody();
+        errorResponseBody.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        errorResponseBody.setErrorMessage(e.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponseBody);
+    }
+
+    @ExceptionHandler(FavoriteNotDeletedException.class)
+    public ResponseEntity<ErrorResponseBody> handleFavoriteNotDeletedException(FavoriteNotDeletedException e) {
         ErrorResponseBody errorResponseBody = new ErrorResponseBody();
         errorResponseBody.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
         errorResponseBody.setErrorMessage(e.getMessage());
