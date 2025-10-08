@@ -18,4 +18,5 @@ public class GetAllPostResponse {
     private String content;
     private Integer replyTo;
     private LocalDateTime createdAt;
+    private boolean favorite;
 }

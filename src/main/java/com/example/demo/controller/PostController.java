@@ -51,11 +51,10 @@ public class PostController {
      * 
      * @return 保存されているすべての投稿
      */
-    @GetMapping("/all")
-    public List<GetAllPostResponse> getAllPost() {
+    @GetMapping("/all/{uuid}")
+    public List<GetAllPostResponse> getAllPost(@PathVariable String uuid) {
         List<GetAllPostResponse> response = new ArrayList<>();
-        response = postService.findAllPost();
+        response = postService.findAllPost(uuid);
         return response;
     }
-
 }
