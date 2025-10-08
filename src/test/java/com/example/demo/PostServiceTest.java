@@ -18,13 +18,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataAccessException;
-import org.springframework.data.domain.Sort;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import com.example.demo.exception.PostNotCreatedException;
 import com.example.demo.exception.PostNotDeletedException;
 import com.example.demo.exception.PostNotFoundException;
 import com.example.demo.model.Post;
+import com.example.demo.model.PostWithFavorite;
 import com.example.demo.model.User;
 import com.example.demo.model.request.CreatePostRequest;
 import com.example.demo.model.response.GetAllPostResponse;
@@ -137,43 +137,27 @@ public class PostServiceTest {
 
         List<GetAllPostResponse> expectedResponses = new ArrayList<>(List.of(response1, response2));
 
-        Post post1 = new Post();
-        post1.setId((long) 1);
-        User user1 = new User();
-        user1.setUuid("a23e4567-e89b-12d3-a456-426614174000");
-        user1.setUserId("test_tarou");
-        user1.setName("テスト 太郎");
-        post1.setUserId(user1);
-        post1.setContent("これはJunitのテストです");
-        post1.setReplyTo(null);
-        post1.setCreatedAt(localDateTime);
+        User user1 = TestUtil.createUser1();
+        Post post1 = TestUtil.createPost((long)1, user1, "これはJunitのテストです", null, localDateTime);
 
-        Post post2 = new Post();
-        post2.setId((long) 2);
-        User user2 = new User();
-        user2.setUuid("b23e4567-e89b-12d3-a456-426614174000");
-        user2.setUserId("test_hanako");
-        user2.setName("テスト 花子");
-        post2.setUserId(user2);
-        post2.setContent("これはJunitのテストです");
-        post2.setReplyTo(null);
-        post2.setCreatedAt(localDateTime);
+        User user2 = TestUtil.createUser2();
+        Post post2 = TestUtil.createPost((long)2, user2, "これはJunitのテストです", null, localDateTime);
 
-        List<Post> mockResponse = new ArrayList<>(List.of(post1, post2));
+        List<PostWithFavorite> mockResponse = new ArrayList<>(List.of(TestUtil.createPostWithFavorite(post1,false), TestUtil.createPostWithFavorite(post2,false)));
 
-        when(postRepository.findAll(Sort.by(Sort.Direction.ASC, "createdAt"))).thenReturn(mockResponse);
+        when(postRepository.findAllPost(TestUtil.TEST_UUID1)).thenReturn(mockResponse);
 
-        List<GetAllPostResponse> acutualResponse = postService.findAllPost();
+        List<GetAllPostResponse> actualResponse = postService.findAllPost(TestUtil.TEST_UUID1);
 
-        assertEquals(expectedResponses, acutualResponse);
+        assertEquals(expectedResponses, actualResponse);
     }
 
     @Test
     void testFindAllPostThrowsException() {
         DataAccessException dataAccessException = new DataAccessException("error") {
         };
-        when(postRepository.findAll()).thenThrow(dataAccessException);
-        PostNotFoundException exception = assertThrows(PostNotFoundException.class, () -> postService.findAllPost());
+        when(postRepository.findAllPost(TestUtil.TEST_UUID1)).thenThrow(dataAccessException);
+        PostNotFoundException exception = assertThrows(PostNotFoundException.class, () -> postService.findAllPost(TestUtil.TEST_UUID1));
         assertEquals(exception.getMessage(), "投稿を取得できませんでした。");
     }
 }

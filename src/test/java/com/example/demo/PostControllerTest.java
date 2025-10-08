@@ -75,7 +75,7 @@ class PostControllerTest {
     void testGetAllPost() throws Exception {
         LocalDateTime localDateTime = LocalDateTime.of(1990, 1, 1, 0, 0, 0);
         GetAllPostResponse response1 = new GetAllPostResponse();
-        response1.setUuid("a23e4567-e89b-12d3-a456-426614174000");
+        response1.setUuid(TestUtil.TEST_UUID1);
         response1.setPostId((long) 1);
         response1.setUserId("test_tarou");
         response1.setUserName("テスト 太郎");
@@ -84,7 +84,7 @@ class PostControllerTest {
         response1.setCreatedAt(localDateTime);
 
         GetAllPostResponse response2 = new GetAllPostResponse();
-        response2.setUuid("b23e4567-e89b-12d3-a456-426614174000");
+        response2.setUuid(TestUtil.TEST_UUID2);
         response2.setPostId((long) 2);
         response2.setUserId("test_hanako");
         response2.setUserName("テスト 花子");
@@ -93,22 +93,24 @@ class PostControllerTest {
         response2.setCreatedAt(localDateTime);
 
         List<GetAllPostResponse> mockResponses = new ArrayList<>(List.of(response1, response2));
-        when(postService.findAllPost()).thenReturn(mockResponses);
+        when(postService.findAllPost(TestUtil.TEST_UUID1)).thenReturn(mockResponses);
 
-        mockMvc.perform(get("/post/all")
+        mockMvc.perform(get("/post/all/{uuid}",TestUtil.TEST_UUID1)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].uuid").value("a23e4567-e89b-12d3-a456-426614174000"))
+                .andExpect(jsonPath("$[0].uuid").value(TestUtil.TEST_UUID1))
                 .andExpect(jsonPath("$[0].postId").value(1))
                 .andExpect(jsonPath("$[0].userId").value("test_tarou"))
                 .andExpect(jsonPath("$[0].userName").value("テスト 太郎"))
                 .andExpect(jsonPath("$[0].content").value("これはJunitのテストです"))
                 .andExpect(jsonPath("$[0].replyTo").isEmpty())
-                .andExpect(jsonPath("$[1].uuid").value("b23e4567-e89b-12d3-a456-426614174000"))
+                .andExpect(jsonPath("$[0].favorite").value(false))
+                .andExpect(jsonPath("$[1].uuid").value(TestUtil.TEST_UUID2))
                 .andExpect(jsonPath("$[1].postId").value(2))
                 .andExpect(jsonPath("$[1].userId").value("test_hanako"))
                 .andExpect(jsonPath("$[1].userName").value("テスト 花子"))
                 .andExpect(jsonPath("$[1].content").value("これはJunitのテストです"))
-                .andExpect(jsonPath("$[1].replyTo").isEmpty());
+                .andExpect(jsonPath("$[1].replyTo").isEmpty())
+                .andExpect(jsonPath("$[1].favorite").value(false));
     }
 }
