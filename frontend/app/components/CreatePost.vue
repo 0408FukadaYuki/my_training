@@ -15,7 +15,7 @@ const state = reactive({
 })
 async function submit() {
     try {
-        await createPost(userStore.getLoginUserId, state.content, null);
+        await createPost(userStore.getLoginUserUuid, state.content, null);
         state.content = '';
         emit("refreshPostData");
     } catch (error: any) {

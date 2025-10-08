@@ -33,7 +33,7 @@ class FavoriteRepositoryTest {
 
         User findUser = new User();
         findUser.setUuid(TestUtil.TEST_UUID1);
-        List<Favorite> favorite = favoriteRepository.findByUser(findUser);
+        List<Favorite> favorite = favoriteRepository.findByUserOrderByCreatedAtDesc(findUser);
         favorite.forEach(f -> {
             assertEquals(expectedFavorite.getFavoritePK(), f.getFavoritePK());
             assertEquals(expectedFavorite.getPost().getId(), f.getPost().getId());
