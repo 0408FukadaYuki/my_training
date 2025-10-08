@@ -3,6 +3,7 @@ package com.example.demo.service;
 import java.util.List;
 
 import com.example.demo.model.request.CreateFavoriteRequest;
+import com.example.demo.model.request.DeleteFavoriteRequest;
 import com.example.demo.model.response.UserFavoriteResponse;
 
 public interface FavoriteService {
@@ -19,5 +20,13 @@ public interface FavoriteService {
      *
      * @param uuid お気に入りを取得するためのユーザーのuuid
      */
-    public  List<UserFavoriteResponse> getFavorite(String uuid);
+    public List<UserFavoriteResponse> getFavorite(String uuid);
+
+    /**
+     * お気に入り削除関数
+     *
+     * @param deleteFavoriteRequest リクエストボディで受け取るお気に入り削除するための情報
+     */
+    public void deleteFavorite(DeleteFavoriteRequest deleteFavoriteRequest);
+
 }
