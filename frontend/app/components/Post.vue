@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import 'bootstrap-icons/font/bootstrap-icons.css';
 const { createFavorite, deleteFavorite } = useFavorite();
+const { deletePost } = usePost();
 const userStore = useUserStore();
 
 interface Emits {
@@ -20,6 +21,10 @@ const createdDate = computed(() => {
     return date.toLocaleString();
 })
 
+const showPostDeleteIconFlag = computed(() => {
+    return props.post.uuid === userStore.getLoginUserUuid;
+})
+
 const submitFavoriteInfo = (async () => {
     try {
         if (props.post.favorite) {
@@ -31,6 +36,22 @@ const submitFavoriteInfo = (async () => {
             emit("showToast", "success", "お気に入りを保存しました。");
             emit("refreshPostData");
         }
+    } catch (error: any) {
+        //400,500番台の場合はエラートーストを表示
+        if (error.message) {
+            emit("showToast", "error", error.message);
+        } else {
+            //ネットワークエラーのerror.vueを表示
+            throw createError({ statusCode: 500, statusMessage: 'ネットワークエラーが発生しました。', fatal: true })
+        }
+    }
+});
+
+const submitDeleteFavoriteInfo = (async () => {
+    try {
+        await deletePost(props.post.postId);
+        emit("showToast", "success", "投稿を削除しました。");
+        emit("refreshPostData");
     } catch (error: any) {
         //400,500番台の場合はエラートーストを表示
         if (error.message) {
@@ -67,6 +88,9 @@ const submitFavoriteInfo = (async () => {
                 <div @click="submitFavoriteInfo" class="mx-auto cursor-pointer">
                     <i v-if="props.post.favorite" class="bi bi-star-fill text-amber-400"></i>
                     <i v-else class="bi bi-star hover:text-amber-400"></i>
+                </div>
+                <div @click="submitDeleteFavoriteInfo" class="mx-auto cursor-pointer">
+                    <i v-if="showPostDeleteIconFlag" class="bi bi-trash hover:text-red-500"></i>
                 </div>
             </div>
         </template>
