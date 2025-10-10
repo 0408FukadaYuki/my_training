@@ -10,6 +10,7 @@ interface Reactive {
     myFavorite: Post[];
     showAlertFlag: boolean;
     alertMessage: string,
+    showDeleteModalFlag: boolean
 }
 
 const state = reactive<Reactive>({
@@ -18,6 +19,7 @@ const state = reactive<Reactive>({
     myFavorite: [],
     showAlertFlag: false,
     alertMessage: "",
+    showDeleteModalFlag: false,
 })
 const items = [
     {
@@ -78,11 +80,17 @@ const refreshPostData = async () => {
         }
     }
 }
+
+const toggleModal = ((value: boolean) => {
+    state.showDeleteModalFlag = value;
+})
 </script>
 
 <template>
     <UContainer class="h-screen flex flex-col">
         <UAlert v-if="state.showAlertFlag" color="error" class="w-1/2 mx-auto" :title=state.alertMessage />
+        <DeleteModal v-if="state.showDeleteModalFlag" @showToast="showToast" @refreshPostData="refreshPostData"
+            @closeDeleteModal="toggleModal"></DeleteModal>
         <div class=" w-full flex-col mt-3">
             <div class="h-16 flex justify-center items-center">
                 <UAvatar class="mr-5" src="/img/exampleImage.png" size="xl" />
@@ -95,8 +103,8 @@ const refreshPostData = async () => {
         <div class="w-full mt-4 flex-col justify-center">
             <UTabs v-model="state.active" :items="items"></UTabs>
             <div>
-                <Post v-for="post in getShowPost" :post="post" :key="post.postId"
-                    @refreshPostData="refreshPostData" @showToast="showToast"></Post>
+                <Post v-for="post in getShowPost" :post="post" :key="post.postId" @refreshPostData="refreshPostData"
+                    @showToast="showToast" @openDeleteModal="toggleModal"></Post>
             </div>
         </div>
     </UContainer>
