@@ -43,7 +43,7 @@ onMounted(async () => {
     }
 })
 
-const getShowPost = computed(() => {
+const displayPosts  = computed(() => {
     if (state.active === '0') {
         state.myPosts = postStore.posts.filter((post) => {
             return post.uuid === userStore.getLoginUserUuid;
@@ -95,7 +95,7 @@ const refreshPostData = async () => {
         <div class="w-full mt-4 flex-col justify-center">
             <UTabs v-model="state.active" :items="items"></UTabs>
             <div>
-                <Post v-for="post in getShowPost" :post="post" :key="post.postId"
+                <Post v-for="post in displayPosts" :post="post" :key="post.postId"
                     @refreshPostData="refreshPostData" @showToast="showToast"></Post>
             </div>
         </div>
