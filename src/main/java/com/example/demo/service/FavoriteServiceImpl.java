@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.exception.FavoriteNotCreatedException;
 import com.example.demo.exception.FavoriteNotDeletedException;
@@ -21,6 +22,7 @@ import com.example.demo.model.response.UserFavoriteResponse;
 import com.example.demo.repository.FavoriteRepository;
 
 @Service
+@Transactional
 public class FavoriteServiceImpl implements FavoriteService {
     @Autowired
     private FavoriteRepository favoriteRepository;
