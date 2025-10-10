@@ -25,7 +25,7 @@ export const useFavorite = () => {
             })
         } catch (error: any) {
             console.log(error);
-            throw new Error(error.data?.errorMessage);
+            throw new Error(error.data?.errorMessage || 'お気に入りの削除に失敗しました');
         }
     }
 
