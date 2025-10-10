@@ -5,7 +5,7 @@ const userStore = useUserStore();
 
 interface Emits {
     (event: "refreshPostData"): void,
-    (event: "showErrorToast", title: string, description: string): void,
+    (event: "showToast", title: string, description: string): void,
 }
 
 const emit = defineEmits<Emits>();
@@ -18,10 +18,11 @@ async function submit() {
         await createPost(userStore.getLoginUserUuid, state.content, null);
         state.content = '';
         emit("refreshPostData");
+        emit("showToast", "success", "投稿を作成しました。");
     } catch (error: any) {
         //400,500番台の場合はエラートーストを表示
         if (error.message) {
-            emit("showErrorToast", "error", "投稿を作成できませんでした。");
+            emit("showToast", "error", "投稿を作成できませんでした。");
         } else {
             //ネットワークエラーのerror.vueを表示
             throw createError({ statusCode: 500, statusMessage: 'ネットワークエラーが発生しました。', fatal: true })

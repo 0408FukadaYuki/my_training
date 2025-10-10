@@ -16,6 +16,7 @@ public interface PostService {
      */
 
     public void createPost(CreatePostRequest createPostRequest);
+
     /**
      * 投稿削除関数
      *
@@ -25,9 +26,9 @@ public interface PostService {
 
     /**
      * 投稿取得関数
-     *
-     * @return 保存されているすべての投稿
+     * @param　uuid お気に入りしている保存しているかを検索するためのユーザー情報
+     * @return 保存されているすべての投稿とuuidで指定したユーザーがお気に入りしているかの情報
      */
-    public List<GetAllPostResponse> findAllPost();
-}
+    public List<GetAllPostResponse> findAllPost(String uuid);
 
+}

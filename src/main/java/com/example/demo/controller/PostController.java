@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -51,11 +52,10 @@ public class PostController {
      * 
      * @return 保存されているすべての投稿
      */
-    @GetMapping("/all")
-    public List<GetAllPostResponse> getAllPost() {
+    @GetMapping("/all/{uuid}")
+    public List<GetAllPostResponse> getAllPost(@PathVariable UUID uuid) {
         List<GetAllPostResponse> response = new ArrayList<>();
-        response = postService.findAllPost();
+        response = postService.findAllPost(uuid.toString());
         return response;
     }
-
 }

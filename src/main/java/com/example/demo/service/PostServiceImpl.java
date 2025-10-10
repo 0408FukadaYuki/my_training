@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +12,7 @@ import com.example.demo.exception.PostNotCreatedException;
 import com.example.demo.exception.PostNotDeletedException;
 import com.example.demo.exception.PostNotFoundException;
 import com.example.demo.model.Post;
+import com.example.demo.model.PostWithFavorite;
 import com.example.demo.model.User;
 import com.example.demo.model.request.CreatePostRequest;
 import com.example.demo.model.response.GetAllPostResponse;
@@ -58,25 +58,25 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<GetAllPostResponse> findAllPost() {
+    public List<GetAllPostResponse> findAllPost(String uuid) {
         try {
-            List<Post> posts = postRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
+            List<PostWithFavorite> PostWithFavorite = postRepository.findAllPost(uuid);
             List<GetAllPostResponse> response = new ArrayList<>();
-            posts.forEach(post -> {
+            PostWithFavorite.forEach(pf -> {
                 GetAllPostResponse res = new GetAllPostResponse();
-                res.setUuid(post.getUserId().getUuid());
-                res.setPostId(post.getId());
-                res.setUserId(post.getUserId().getUserId());
-                res.setUserName(post.getUserId().getName());
-                res.setContent(post.getContent());
-                res.setReplyTo(post.getReplyTo());
-                res.setCreatedAt(post.getCreatedAt());
+                res.setUuid(pf.getPost().getUserId().getUuid());
+                res.setPostId(pf.getPost().getId());
+                res.setUserId(pf.getPost().getUserId().getUserId());
+                res.setUserName(pf.getPost().getUserId().getName());
+                res.setContent(pf.getPost().getContent());
+                res.setReplyTo(pf.getPost().getReplyTo());
+                res.setCreatedAt(pf.getPost().getCreatedAt());
+                res.setFavorite(pf.isFavorite());
                 response.add(res);
             });
             return response;
         } catch (Exception e) {
             throw new PostNotFoundException("投稿を取得できませんでした。");
         }
-
     }
 }

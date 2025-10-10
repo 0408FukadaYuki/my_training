@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 import com.github.database.rider.spring.api.DBRider;
 import com.example.demo.model.Post;
+import com.example.demo.model.PostWithFavorite;
 import com.example.demo.model.User;
 import com.example.demo.repository.PostRepository;
 
@@ -59,29 +60,32 @@ class PostRepositoryTest {
     @Test
     @DBRider
     void testFindAllPost() throws Exception {
-        List<Post> response = postRepository.findAll();
-        List<Post> actual = new ArrayList<>();
+        List<PostWithFavorite> response = postRepository.findAllPost(TestUtil.TEST_UUID1);
+        List<PostWithFavorite> actual = new ArrayList<>();
         response.forEach(actual::add);
         assertEquals(13, actual.size());
-        assertEquals(1, actual.get(0).getId());
-        assertEquals("323e4567-e89b-12d3-a456-426614174002", actual.get(0).getUserId().getUuid());
-        assertEquals("初めての投稿です。よろしくお願いします。", actual.get(0).getContent());
-        assertEquals(null, actual.get(0).getReplyTo());
-        assertEquals(2, actual.get(1).getId());
-        assertEquals("223e4567-e89b-12d3-a456-426614174001", actual.get(1).getUserId().getUuid());
-        assertEquals("2回目の投稿です。", actual.get(1).getContent());
-        assertEquals(null, actual.get(1).getReplyTo());
-        assertEquals(3, actual.get(2).getId());
-        assertEquals("123e4567-e89b-12d3-a456-426614174000", actual.get(2).getUserId().getUuid());
-        assertEquals("3回目の投稿です。", actual.get(2).getContent());
-        assertEquals(null, actual.get(2).getReplyTo());
+        assertEquals(10, actual.get(0).getPost().getId());
+        assertEquals("323e4567-e89b-12d3-a456-426614174002", actual.get(0).getPost().getUserId().getUuid());
+        assertEquals("これからよろしくお願いします。", actual.get(0).getPost().getContent());
+        assertEquals(null, actual.get(0).getPost().getReplyTo());
+        assertEquals(false,actual.get(0).isFavorite());
+        assertEquals(9, actual.get(1).getPost().getId());
+        assertEquals("223e4567-e89b-12d3-a456-426614174001", actual.get(1).getPost().getUserId().getUuid());
+        assertEquals("返信待ってます。", actual.get(1).getPost().getContent());
+        assertEquals(null, actual.get(1).getPost().getReplyTo());
+        assertEquals(false,actual.get(1).isFavorite());
+        assertEquals(8, actual.get(2).getPost().getId());
+        assertEquals("423e4567-e89b-12d3-a456-426614174003", actual.get(2).getPost().getUserId().getUuid());
+        assertEquals("皆さんの投稿楽しみにしています。", actual.get(2).getPost().getContent());
+        assertEquals(null, actual.get(2).getPost().getReplyTo());
+        assertEquals(false,actual.get(2).isFavorite());
     }
 
     @Test
     @DBRider
     void testDeletePost() throws Exception{
         postRepository.deleteById((long)1);
-        Optional<Post> acutal = postRepository.findById((long)1);
-        assertTrue(acutal.isEmpty());
+        Optional<Post> actual = postRepository.findById((long)1);
+        assertTrue(actual.isEmpty());
     }
 }

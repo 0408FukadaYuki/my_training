@@ -7,6 +7,7 @@ import java.util.UUID;
 import com.example.demo.model.Favorite;
 import com.example.demo.model.FavoritePK;
 import com.example.demo.model.Post;
+import com.example.demo.model.PostWithFavorite;
 import com.example.demo.model.User;
 import com.example.demo.model.response.UserFavoriteResponse;
 
@@ -128,5 +129,18 @@ public class TestUtil {
         userFavoriteResponse.setCreatedAt(postCreatedAt);
         userFavoriteResponse.setFavoriteCreatedAt(favoriteCreatedAt);
         return userFavoriteResponse;
+    }
+
+    /**
+     * 
+     * @param post
+     * @param favorite
+     * @return
+     */
+    public static PostWithFavorite createPostWithFavorite(Post post, boolean favorite){
+        PostWithFavorite postWithFavorite = new PostWithFavorite();
+        postWithFavorite.setPost(post);
+        postWithFavorite.setFavorite(favorite);
+        return postWithFavorite;
     }
 }

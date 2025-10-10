@@ -6,18 +6,23 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.exception.FavoriteNotCreatedException;
+import com.example.demo.exception.FavoriteNotDeletedException;
 import com.example.demo.exception.FavoriteNotGetException;
 import com.example.demo.model.Favorite;
 import com.example.demo.model.FavoritePK;
 import com.example.demo.model.Post;
 import com.example.demo.model.User;
 import com.example.demo.model.request.CreateFavoriteRequest;
+import com.example.demo.model.request.DeleteFavoriteRequest;
+import com.example.demo.model.request.FavoriteBaseRequest;
 import com.example.demo.model.response.UserFavoriteResponse;
 import com.example.demo.repository.FavoriteRepository;
 
 @Service
+@Transactional
 public class FavoriteServiceImpl implements FavoriteService {
     @Autowired
     private FavoriteRepository favoriteRepository;
@@ -33,13 +38,13 @@ public class FavoriteServiceImpl implements FavoriteService {
     }
 
     @Override
-    public List<UserFavoriteResponse> getFavorite(String uuid){
+    public List<UserFavoriteResponse> getFavorite(String uuid) {
         try {
             User findUserInfo = new User();
             findUserInfo.setUuid(uuid);
             List<Favorite> favorites = favoriteRepository.findByUserOrderByCreatedAtDesc(findUserInfo);
             List<UserFavoriteResponse> response = new ArrayList<>();
-            favorites.forEach(favorite ->{
+            favorites.forEach(favorite -> {
                 UserFavoriteResponse res = new UserFavoriteResponse();
                 User postUser = favorite.getPost().getUserId();
                 Post postInfo = favorite.getPost();
@@ -59,24 +64,34 @@ public class FavoriteServiceImpl implements FavoriteService {
         }
     }
 
-    private Favorite setFavoriteInfo(CreateFavoriteRequest createFavoriteRequest) {
-        Favorite createFavoriteInfo = new Favorite();
-        String uuid = createFavoriteRequest.getUuid();
-        Long postId = createFavoriteRequest.getPostId();
+    @Override
+    public void deleteFavorite(DeleteFavoriteRequest deleteFavoriteRequest) {
+        try {
+            Favorite deleteFavoriteInfo = setFavoriteInfo(deleteFavoriteRequest);
+            favoriteRepository.delete(deleteFavoriteInfo);
+        } catch (DataAccessException e) {
+            throw new FavoriteNotDeletedException("お気に入りを削除できませんでした。");
+        }
+    }
+
+    private Favorite setFavoriteInfo(FavoriteBaseRequest favoriteRequest) {
+        Favorite favoriteInfo = new Favorite();
+        String uuid = favoriteRequest.getUuid();
+        Long postId = favoriteRequest.getPostId();
 
         User user = new User();
         user.setUuid(uuid);
-        createFavoriteInfo.setUser(user);
+        favoriteInfo.setUser(user);
 
         Post post = new Post();
         post.setId(postId);
-        createFavoriteInfo.setPost(post);
+        favoriteInfo.setPost(post);
 
         FavoritePK favoritePK = new FavoritePK();
         favoritePK.setPostId(postId);
         favoritePK.setUserId(uuid);
-        createFavoriteInfo.setFavoritePK(favoritePK);
+        favoriteInfo.setFavoritePK(favoritePK);
 
-        return createFavoriteInfo;
+        return favoriteInfo;
     }
 }

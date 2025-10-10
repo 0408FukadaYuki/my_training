@@ -7,10 +7,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.model.request.CreateFavoriteRequest;
+import com.example.demo.model.request.DeleteFavoriteRequest;
 import com.example.demo.model.response.UserFavoriteResponse;
 import com.example.demo.service.FavoriteService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -42,4 +44,13 @@ public class FavoriteController {
         return favoriteService.getFavorite(uuid);
     }
 
+    /**
+     * お気に入り削除API
+     * 
+     * @param deleteFavoriteRequest お気に入り削除に必要なユーザーのuuidと投稿のidを受け取る
+     */
+    @DeleteMapping("/delete")
+    public void deleteFavorite(@RequestBody DeleteFavoriteRequest deleteFavoriteRequest) {
+        favoriteService.deleteFavorite(deleteFavoriteRequest);
+    }
 }

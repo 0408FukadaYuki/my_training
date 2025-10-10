@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
@@ -19,11 +20,13 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import com.example.demo.exception.FavoriteNotCreatedException;
+import com.example.demo.exception.FavoriteNotDeletedException;
 import com.example.demo.exception.FavoriteNotGetException;
 import com.example.demo.model.Favorite;
 import com.example.demo.model.Post;
 import com.example.demo.model.User;
 import com.example.demo.model.request.CreateFavoriteRequest;
+import com.example.demo.model.request.DeleteFavoriteRequest;
 import com.example.demo.model.response.UserFavoriteResponse;
 import com.example.demo.repository.FavoriteRepository;
 import com.example.demo.service.FavoriteService;
@@ -95,5 +98,26 @@ public class FavoriteServiceTest {
         FavoriteNotGetException exception = assertThrows(FavoriteNotGetException.class,
                 () -> favoriteService.getFavorite(TestUtil.TEST_UUID1));
         assertEquals(exception.getMessage(), "お気に入りを取得できませんでした。");
+    }
+
+    @Test
+    void testDeleteFavorite() {
+        DeleteFavoriteRequest deleteFavoriteRequest = new DeleteFavoriteRequest();
+        deleteFavoriteRequest.setUuid(TestUtil.TEST_UUID2);
+        deleteFavoriteRequest.setPostId((long) 1);
+
+        assertDoesNotThrow(() -> favoriteService.deleteFavorite(deleteFavoriteRequest));
+    }
+
+    @Test
+    void testDeleteFavoriteThrowsException() {
+        DeleteFavoriteRequest deleteFavoriteRequest = new DeleteFavoriteRequest();
+        deleteFavoriteRequest.setUuid(TestUtil.TEST_UUID2);
+        deleteFavoriteRequest.setPostId((long) 1);
+        doThrow(new DataAccessException("error") {
+        }).when(favoriteRepository).delete(any());
+        FavoriteNotDeletedException exception = assertThrows(FavoriteNotDeletedException.class,
+                () -> favoriteService.deleteFavorite(deleteFavoriteRequest));
+        assertEquals(exception.getMessage(), "お気に入りを削除できませんでした。");
     }
 }
