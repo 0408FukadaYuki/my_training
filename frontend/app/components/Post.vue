@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import 'bootstrap-icons/font/bootstrap-icons.css';
 const { createFavorite, deleteFavorite } = useFavorite();
-const { deletePost } = usePost();
+const postStore = usePostStore();
 const userStore = useUserStore();
 
 interface Emits {
+    (event: "openDeleteModal", value: boolean): void,
     (event: "refreshPostData"): void,
     (event: "showToast", title: string, description: string): void,
 }
@@ -47,21 +48,10 @@ const submitFavoriteInfo = (async () => {
     }
 });
 
-const submitDeletePostInfo = (async () => {
-    try {
-        await deletePost(props.post.postId);
-        emit("showToast", "success", "投稿を削除しました。");
-        emit("refreshPostData");
-    } catch (error: any) {
-        //400,500番台の場合はエラートーストを表示
-        if (error.message) {
-            emit("showToast", "error", error.message);
-        } else {
-            //ネットワークエラーのerror.vueを表示
-            throw createError({ statusCode: 500, statusMessage: 'ネットワークエラーが発生しました。', fatal: true })
-        }
-    }
-});
+const openDeleteModal = (() => {
+    postStore.deletePostId = props.post.postId;
+    emit("openDeleteModal", true);
+})
 
 </script>
 
@@ -89,7 +79,7 @@ const submitDeletePostInfo = (async () => {
                     <i v-if="props.post.favorite" class="bi bi-star-fill text-amber-400"></i>
                     <i v-else class="bi bi-star hover:text-amber-400"></i>
                 </div>
-                <div @click="submitDeletePostInfo" class="mx-auto cursor-pointer">
+                <div @click="openDeleteModal" class="mx-auto cursor-pointer">
                     <i v-if="showPostDeleteIconFlag" class="bi bi-trash hover:text-red-500"></i>
                 </div>
             </div>
