@@ -47,7 +47,7 @@ const submitFavoriteInfo = (async () => {
     }
 });
 
-const submitDeleteFavoriteInfo = (async () => {
+const submitDeletePostInfo = (async () => {
     try {
         await deletePost(props.post.postId);
         emit("showToast", "success", "投稿を削除しました。");
@@ -89,7 +89,7 @@ const submitDeleteFavoriteInfo = (async () => {
                     <i v-if="props.post.favorite" class="bi bi-star-fill text-amber-400"></i>
                     <i v-else class="bi bi-star hover:text-amber-400"></i>
                 </div>
-                <div @click="submitDeleteFavoriteInfo" class="mx-auto cursor-pointer">
+                <div @click="submitDeletePostInfo" class="mx-auto cursor-pointer">
                     <i v-if="showPostDeleteIconFlag" class="bi bi-trash hover:text-red-500"></i>
                 </div>
             </div>
