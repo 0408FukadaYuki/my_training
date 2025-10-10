@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import 'bootstrap-icons/font/bootstrap-icons.css';
 const { createFavorite, deleteFavorite } = useFavorite();
+const postStore = usePostStore();
 const userStore = useUserStore();
 
 interface Emits {
+    (event: "openDeleteModal", value: boolean): void,
     (event: "refreshPostData"): void,
     (event: "showToast", title: string, description: string): void,
 }
@@ -18,6 +20,10 @@ const props = defineProps<Props>();
 const createdDate = computed(() => {
     const date = new Date(props.post.createdAt);
     return date.toLocaleString();
+})
+
+const showPostDeleteIconFlag = computed(() => {
+    return props.post.uuid === userStore.getLoginUserUuid;
 })
 
 const submitFavoriteInfo = (async () => {
@@ -41,6 +47,11 @@ const submitFavoriteInfo = (async () => {
         }
     }
 });
+
+const openDeleteModal = (() => {
+    postStore.deletePostId = props.post.postId;
+    emit("openDeleteModal", true);
+})
 
 </script>
 
@@ -67,6 +78,9 @@ const submitFavoriteInfo = (async () => {
                 <div @click="submitFavoriteInfo" class="mx-auto cursor-pointer">
                     <i v-if="props.post.favorite" class="bi bi-star-fill text-amber-400"></i>
                     <i v-else class="bi bi-star hover:text-amber-400"></i>
+                </div>
+                <div @click="openDeleteModal" class="mx-auto cursor-pointer">
+                    <i v-if="showPostDeleteIconFlag" class="bi bi-trash hover:text-red-500"></i>
                 </div>
             </div>
         </template>
