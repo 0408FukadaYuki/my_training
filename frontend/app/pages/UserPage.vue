@@ -43,7 +43,7 @@ onMounted(async () => {
     }
 })
 
-const displayPosts  = computed(() => {
+const displayPosts = computed(() => {
     if (state.active === '0') {
         state.myPosts = postStore.posts.filter((post) => {
             return post.uuid === userStore.getLoginUserUuid;
@@ -64,8 +64,11 @@ const showToast = (title: string, description: string) => {
 
 const refreshPostData = async () => {
     try {
-        const posts: Post[] = await getPost(userStore.getLoginUserUuid);
-        state.myFavorite = await getUserFavorite(userStore.getLoginUserUuid);
+        const [posts, favorites] = await Promise.all([
+            getPost(userStore.getLoginUserUuid),
+            getUserFavorite(userStore.getLoginUserUuid)
+        ]);
+        state.myFavorite = favorites;
         postStore.posts = [...posts];
     } catch (error: any) {
         //400,500番台の場合はエラーアラートを表示
@@ -95,8 +98,8 @@ const refreshPostData = async () => {
         <div class="w-full mt-4 flex-col justify-center">
             <UTabs v-model="state.active" :items="items"></UTabs>
             <div>
-                <Post v-for="post in displayPosts" :post="post" :key="post.postId"
-                    @refreshPostData="refreshPostData" @showToast="showToast"></Post>
+                <Post v-for="post in displayPosts" :post="post" :key="post.postId" @refreshPostData="refreshPostData"
+                    @showToast="showToast"></Post>
             </div>
         </div>
     </UContainer>
