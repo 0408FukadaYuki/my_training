@@ -1,0 +1,16 @@
+services:
+  frontend:
+    build: ./frontend
+    image: frontend
+    command: npm run dev
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    
+  backend:
+    build: ./backend
+    image: backend
+    command: java -jar app.jar
+    ports:
+      - "8080:8080"
